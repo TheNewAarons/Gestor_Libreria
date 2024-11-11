@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libreria El Gran Poeta</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    {% load static %}
+    <style>
+        /* Estilos adicionales */
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+        header {
+            height: 800px;
+            background: linear-gradient(to right, hsla(0, 0%, 0%, 0.459), hsla(0, 0%, 0%, 0.664)), url("{% static 'libreria/img/ilustracion2.jpg' %}") no-repeat center center / cover;
+            color: #ffffff;
+            text-align: center;
+            position: relative;
+        }
+        footer {
+            background-color: #808080;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="d-flex flex-column align-items-center justify-content-center text-center">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sobre nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Portafolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="text-center textos-header">
+        <h1 class="display-4">El Gran Poeta</h1>
+        <h2 class="font-weight-light">Tu Libreria, Tu Hogar</h2>
+    </div>
+</header>
+
+<!-- Sobre Nosotros -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">Sobre Nosotros</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{% static 'libreria/img/portd.jpeg' %}" class="img-fluid" alt="Sobre nosotros">
+        </div>
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+            <h3><span class="badge badge-dark">1</span> Nuestra Historia</h3>
+            <p class="text-justify">Somos una empresa dedicada a...</p>
+            <h3><span class="badge badge-dark">2</span> Misión y Visión</h3>
+            <p class="text-justify">Nuestra misión es...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Portafolio -->
+<section class="portfolio bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Nuestro Portafolio</h2>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="portfolio-item position-relative">
+                    <img src="{% static 'libreria/img/img1.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
+                        <p>Proyecto 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="portfolio-item position-relative">
+                    <img src="{% static 'libreria/img/img2.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
+                        <p>Proyecto 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="portfolio-item position-relative">
+                    <img src="{% static 'libreria/img/img3.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
+                        <p>Proyecto 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="portfolio-item position-relative">
+                    <img src="{% static 'libreria/img/img4.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
+                        <p>Proyecto 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="portfolio-item position-relative">
+                    <img src="{% static 'libreria/img/img5.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
+                        <p>Proyecto 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="portfolio-item position-relative">
+                    <img src="{% static 'libreria/img/img6.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
+                        <p>Proyecto 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="portfolio-item position-relative">
+                    <img src="{% static 'libreria/img/img7.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
+                        <p>Proyecto 1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="portfolio-item position-relative">
+                    <img src="{% static 'libreria/img/img8.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
+                        <p>Proyecto 1</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Repetir bloques de .portfolio-item para más imágenes -->
+        </div>
+    </div>
+</section>
+
+<!-- Clientes -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">Nuestros Clientes</h2>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="card bg-secondary text-white text-center p-3">
+                <img src="{% static 'libreria/img/tofoPerfil.jpeg' %}" class="card-img-top rounded-circle mx-auto my-3" style="width:100px; height:100px;" alt="Cliente 1">
+                <div class="card-body">
+                    <p>Testimonio del cliente 1</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card bg-secondary text-white text-center p-3">
+                <img src="{% static 'libreria/img/tofoPerfil.jpeg' %}" class="card-img-top rounded-circle mx-auto my-3" style="width:100px; height:100px;" alt="Cliente 2">
+                <div class="card-body">
+                    <p>Testimonio del cliente 2</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Equipo 
+<section class="about-services bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Nuestro Equipo</h2>
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="{% static 'libreria/img/tofoPerfil.jpeg' %}" class="img-fluid rounded-circle mb-3" style="width: 80%;" alt="Miembro del equipo 1">
+                <h3>Miembro 1</h3>
+                <p>Descripción del miembro del equipo.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="{% static 'libreria/img/tofoPerfil.jpeg' %}" class="img-fluid rounded-circle mb-3" style="width: 80%;" alt="Miembro del equipo 1">
+                <h3>Miembro 1</h3>
+                <p>Descripción del miembro del equipo.</p>
+            </div>
+              -Repetir bloques para más miembros- 
+        </div>
+    </div>
+</section> -->
+
+
+<!-- Footer -->
+<footer class="py-4">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-4">
+                <h4 class="border-bottom border-light pb-2 mb-3">Dirección</h4>
+                <p>Calle Falsa 123, Ciudad</p>
+            </div>
+            <div class="col-md-4">
+                <h4 class="border-bottom border-light pb-2 mb-3">Contacto</h4>
+                <p>Email: contacto@ejemplo.com</p>
+            </div>
+            <div class="col-md-4">
+                <h4 class="border-bottom border-light pb-2 mb-3">Síguenos</h4>
+                <p>Redes sociales</p>
+            </div>
+        </div>
+        <p class="mt-4">© 2024 Todos los derechos reservados</p>
+    </div>
+</footer>
+
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
