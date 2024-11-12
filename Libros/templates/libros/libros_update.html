@@ -12,11 +12,11 @@
     <link rel="shortcut icon" href="{% static 'libreria/img/logo.jpeg' %}" type="image/x-icon">
 </head>
 <body>
-    <form method="post" >
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-success">Actializar</button>
-        <a class="btn btn-dark" href="{% url 'list' %}">Volver al inicio</a>
+        <a class="btn btn-dark" href="{% url 'list' %}">Volver</a>
     </form>
 </body>
 </html>

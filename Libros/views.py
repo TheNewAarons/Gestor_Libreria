@@ -29,3 +29,8 @@ class LibroUpdateView(UpdateView):
     template_name = 'libros/libros_update.html'
     form_class = LibroForm
     success_url = reverse_lazy('list')
+
+class LibroDetailView(DetailView):
+    model = Libro
+    template_name = 'libros/libros_detail.html'
+    context_object_name = 'libro'

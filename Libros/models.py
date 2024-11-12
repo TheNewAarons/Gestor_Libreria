@@ -19,6 +19,7 @@ class Libro(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    portada = models.ImageField(null=True, blank=True, upload_to="portada")
 
     def __str__(self):
         return self.title

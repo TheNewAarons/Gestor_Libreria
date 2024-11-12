@@ -4,14 +4,15 @@ from .models import Libro, Author
 class LibroForm(forms.ModelForm):
     class Meta:
         model = Libro
-        fields = ('title', 'description', 'author', 'tipo', 'editorial', 'tamaño')
+        fields = ('title', 'description', 'author', 'tipo', 'editorial', 'tamaño', 'portada')
         widgets = {
             'tipo': forms.Select(attrs={'class': 'form-control'}),
-            'tamaño': forms.TextInput(attrs={'class': 'form-control'}),
             'editorial': forms.Select(attrs={'class': 'form-control'}),
+            'author': forms.Select(attrs={'class': 'form-control'}),
+            'tamaño': forms.TextInput(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'author': forms.Select(attrs={'class': 'form-control'}),
+            'portada': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
 class AuthorForm(forms.ModelForm):

@@ -17,7 +17,7 @@
         <form method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Eliminar</button>
-            <a class="btn btn-dark" href="{% url 'list' %}">Volver al inicio</a>
+            <a class="btn btn-dark" href="{% url 'list' %}">Volver</a>
         </form>
     {% else %}
         <h2>Libro no encontrado</h2>
