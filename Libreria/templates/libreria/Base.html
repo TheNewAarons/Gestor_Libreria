@@ -8,13 +8,14 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     {% load static %}
+    <link rel="shortcut icon" href="{% static 'libreria/img/logo.jpeg' %}" type="image/x-icon">
     <style>
         /* Estilos adicionales */
         body {
             font-family: 'Open Sans', sans-serif;
         }
         header {
-            height: 800px;
+            height: 970px;
             background: linear-gradient(to right, hsla(0, 0%, 0%, 0.459), hsla(0, 0%, 0%, 0.664)), url("{% static 'libreria/img/ilustracion2.jpg' %}") no-repeat center center / cover;
             color: #ffffff;
             text-align: center;
@@ -30,7 +31,7 @@
 
 <!-- Header -->
 <header class="d-flex flex-column align-items-center justify-content-center text-center">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: rgba(0, 0, 0, 0);">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -38,21 +39,25 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Inicio</a>
+                        <a class="nav-link text-white" href="#">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Sobre nosotros</a>
+                        <a class="nav-link text-white" href="#sobre-nosotros">Sobre nosotros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Portafolio</a>
+                        <a class="nav-link text-white" href="{% url 'list' %}">Libros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contacto</a>
+                        <a class="nav-link text-white" href="#clientes">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Log-In</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    
     <div class="text-center textos-header">
         <h1 class="display-4">El Gran Poeta</h1>
         <h2 class="font-weight-light">Tu Libreria, Tu Hogar</h2>
@@ -60,29 +65,31 @@
 </header>
 
 <!-- Sobre Nosotros -->
-<section class="container my-5">
+<section id="sobre-nosotros" class="container my-5">
     <h2 class="text-center mb-4">Sobre Nosotros</h2>
     <div class="row">
         <div class="col-md-6">
-            <img src="{% static 'libreria/img/portd.jpeg' %}" class="img-fluid" alt="Sobre nosotros">
+            <img src="{% static 'libreria/img/portd.jpeg' %}" class="img-fluid w-100" alt="Sobre nosotros">
         </div>
         <div class="col-md-6 d-flex flex-column justify-content-center">
             <h3><span class="badge badge-dark">1</span> Nuestra Historia</h3>
-            <p class="text-justify">Somos una empresa dedicada a...</p>
+            <p class="text-justify">El Gran Poeta nació en el corazón de los amantes de la literatura. Fundada en 2010 por un grupo de apasionados por los libros, nuestra librería se ha convertido en un refugio para los lectores ávidos y curiosos. Desde entonces, hemos estado dedicados a compartir historias, conocimiento y emociones a través de las páginas impresas.</p>
             <h3><span class="badge badge-dark">2</span> Misión y Visión</h3>
-            <p class="text-justify">Nuestra misión es...</p>
+            <p class="text-justify">Pasión por los libros: Cada libro tiene una historia que contar, y estamos aquí para compartirla contigo.</p>
+            <p class="text-justify">Comunidad lectora: Queremos ser más que una librería; somos un espacio donde los lectores se encuentran, debaten y crecen juntos.</p>
+            <p class="text-justify">Diversidad literaria: Celebramos la diversidad de géneros, autores y culturas. Hay un libro para cada persona y una persona para cada libro.</p>
         </div>
     </div>
 </section>
 
 <!-- Portafolio -->
-<section class="portfolio bg-light py-5">
+<section id="portafolio" class="portfolio bg-light py-5">
     <div class="container">
         <h2 class="text-center mb-5">Nuestro Portafolio</h2>
         <div class="row">
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="portfolio-item position-relative">
-                    <img src="{% static 'libreria/img/img1.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <img src="{% static 'libreria/img/img1.jpeg' %}" class="img-fluid w-100" alt="Portafolio 1">
                     <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
                         <p>Proyecto 1</p>
                     </div>
@@ -90,7 +97,7 @@
             </div>
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="portfolio-item position-relative">
-                    <img src="{% static 'libreria/img/img2.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <img src="{% static 'libreria/img/img2.jpeg' %}" class="img-fluid w-100" alt="Portafolio 1">
                     <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
                         <p>Proyecto 1</p>
                     </div>
@@ -98,7 +105,7 @@
             </div>
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="portfolio-item position-relative">
-                    <img src="{% static 'libreria/img/img3.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <img src="{% static 'libreria/img/img3.jpeg' %}" class="img-fluid w-100" alt="Portafolio 1">
                     <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
                         <p>Proyecto 1</p>
                     </div>
@@ -106,7 +113,7 @@
             </div>
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="portfolio-item position-relative">
-                    <img src="{% static 'libreria/img/img4.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <img src="{% static 'libreria/img/img4.jpeg' %}" class="img-fluid w-100" alt="Portafolio 1">
                     <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
                         <p>Proyecto 1</p>
                     </div>
@@ -114,7 +121,7 @@
             </div>
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="portfolio-item position-relative">
-                    <img src="{% static 'libreria/img/img5.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <img src="{% static 'libreria/img/img5.jpeg' %}" class="img-fluid w-100" alt="Portafolio 1">
                     <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
                         <p>Proyecto 1</p>
                     </div>
@@ -122,7 +129,7 @@
             </div>
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="portfolio-item position-relative">
-                    <img src="{% static 'libreria/img/img6.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <img src="{% static 'libreria/img/img6.jpeg' %}" class="img-fluid w-100" alt="Portafolio 1">
                     <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
                         <p>Proyecto 1</p>
                     </div>
@@ -130,7 +137,7 @@
             </div>
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="portfolio-item position-relative">
-                    <img src="{% static 'libreria/img/img7.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <img src="{% static 'libreria/img/img7.jpeg' %}" class="img-fluid w-100" alt="Portafolio 1">
                     <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
                         <p>Proyecto 1</p>
                     </div>
@@ -138,7 +145,7 @@
             </div>
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="portfolio-item position-relative">
-                    <img src="{% static 'libreria/img/img8.jpeg' %}" class="img-fluid" alt="Portafolio 1">
+                    <img src="{% static 'libreria/img/img8.jpeg' %}" class="img-fluid w-100" alt="Portafolio 1">
                     <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
                         <p>Proyecto 1</p>
                     </div>
@@ -150,7 +157,7 @@
 </section>
 
 <!-- Clientes -->
-<section class="container my-5">
+<section id="clientes" class="container my-5">
     <h2 class="text-center mb-4">Nuestros Clientes</h2>
     <div class="row">
         <div class="col-md-6 mb-3">
