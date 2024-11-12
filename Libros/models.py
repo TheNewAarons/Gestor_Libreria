@@ -11,7 +11,10 @@ class Author(models.Model):
         return f"{self.name} {self.last_name}"
 
 class Libro(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
+    tipo = models.CharField(max_length = 100, null=True)
+    tamaño = models.PositiveIntegerField(null=True)
+    editorial = models.CharField(max_length=100, null=True)
     author = models.CharField(max_length=100)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
