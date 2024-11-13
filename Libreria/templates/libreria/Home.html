@@ -24,9 +24,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <ul class="navbar-nav ml-auto">
+                        {% if request.user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'base' %}">Modulos</a>
                         </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="#sobre-nosotros">Sobre Nosotros</a>
                         </li>
@@ -36,16 +38,25 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#clientes">Clientes</a>
                         </li>
+                        {% if request.user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="bi bi-person-fill"></i>LOGIN</a>
+                            <div class="d-flex" role="search">
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="btn btn-dark" type="submit"><i class="bi bi-box-arrow-right"></i>LOGOUT</button>
+                                </form>
                         </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}"><i class="bi bi-person-fill"></i>LOGIN</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
         <h1>Tu Librería, Tu Hogar</h1>
     </header>
-
     <!-- Sobre Nosotros -->
     <section id="sobre-nosotros" class="container my-5">
         <h2 class="text-center mb-4">Sobre Nosotros</h2>

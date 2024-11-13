@@ -1,0 +1,25 @@
+{%extends 'Libreria/Base_Modulos.html' %}
+
+{%block content %}
+<h2>Iniciar Sesion</h2>
+<div class="col-md-6 mx-auto">
+    <form method="post">
+        {%csrf_token%}
+        <p>
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" required>
+        </p>
+        <p>
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" required>
+        </p>
+        {%if form.non_field_errors%}
+        <p class="text-danger">Usuario y/o contraseñas incorrectas, intente nuevamente</p>
+        {%endif%}
+        <button class='btn btn-info' type='submit'>Login</button>
+        <a href="{%url 'home'%}" class="btn btn-dark">Back</a>
+    </form>
+</div>
+{%endblock%}
+
+
