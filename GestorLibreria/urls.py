@@ -7,6 +7,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('base/', views.base, name='base'),
     path('Libros/', include('Libros.urls')),
 ]
 
