@@ -1,0 +1,17 @@
+{% extends 'Libreria/Base_modulos.html' %}
+
+{% block content %}
+<body>
+    {% if bodega %}
+        <h2 class="text-center mb-4 text-white">Eliminar Bodega</h2>
+        <p class="text-center mb-4 text-white" mb-4>Esta seguro de eliminar la bodega {{bodega.id}}?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a class="btn btn-dark" href="{% url 'bodegas_list' %}">Volver</a>
+        </form>
+    {% else %}
+        <h2>Bodega no encontrada</h2>
+    {% endif %}
+</body>
+{% endblock content %}

@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-from Libros.views import LibroListView
 from Libreria import views
 from django.conf import settings
 
@@ -9,6 +8,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('base/', views.base, name='base'),
     path('Libros/', include('Libros.urls')),
+    path('Bodegas/', include('Bodegas.urls')),
 ]
 
 

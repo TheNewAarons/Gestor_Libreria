@@ -1,0 +1,32 @@
+{% extends 'Libreria/Base_modulos.html' %}
+
+{% block content %}
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card p-4 shadow">
+            {% if bodega %}
+            <h2 class="text-center mb-4 font-family: 'Lora', serif;">Detalles del Bodega {{ bodega.id }}</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <p><b>Nombre:</b> {{ bodega.nombre }}</p>
+                    <p><b>Direccion:</b> {{ bodega.direction }}</p>
+                    <p><b>Contenido:</b> {{ bodega.tipo_de_contenido }}</p>
+                    <p><b>Stock:</b> {{ bodega.nivel_stock }}</p>
+                    <p><b>Estado:</b> {{ bodega.estado }}</p>
+                    <p><b>Tamaño:</b> {{ bodega.tamaño_bodega }}</p>
+                    <p><b>Fecha Creación:</b> {{ bodega.created_at }}</p>
+                    <p><b>Fecha Actualización:</b> {{ bodega.updated_at }}</p>
+                    <p><b>Capacidad:</b> {{ bodega.capacidad }}</p>
+                </div>
+            </div>
+            {% else %}
+            <h2 class="text-center text-danger">Libro no encontrado</h2>
+            {% endif %}
+        </div>
+        <div class="text-center mt-4">
+            <a class="btn btn-dark" href="{% url 'bodegas_list' %}">Volver</a>
+        </div>
+    </div>
+</body>
+{% endblock %}

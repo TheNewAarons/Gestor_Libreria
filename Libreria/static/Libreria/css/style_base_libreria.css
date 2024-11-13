@@ -67,3 +67,9 @@ section {
     margin-top: 100px; /* Espacio superior */
     margin-bottom: 100px; /* Espacio inferior */
 }
+
+
+
+.custom-container {
+    max-width: 95%; /* Ajusta el porcentaje según lo que necesitas */
+}

@@ -76,80 +76,65 @@
 
     <!-- Portafolio -->
     <section id="portafolio" class="portfolio bg-light py-5">
-        <div class="container">
+        <div class="container custom-container">
             <h2 class="text-center mb-5">Productos Estrellas</h2>
-            <div class="row">
-                {% block content %}
-                
-                {% endblock %}
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="portfolio-item position-relative">
-                        <img src="{% static 'libreria/img/img1.jpeg' %}" class="img-fluid w-100 h-200" alt="Portafolio 1">
-                        <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
-                            <p>Proyecto 1</p>
-                        </div>
+            <div class="d-flex justify-content-center flex-wrap gap-3">
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img1.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="portfolio-item position-relative">
-                        <img src="{% static 'libreria/img/img2.jpeg' %}" class="img-fluid w-100 h-200" alt="Portafolio 1">
-                        <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
-                            <p>Proyecto 1</p>
-                        </div>
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img2.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="portfolio-item position-relative">
-                        <img src="{% static 'libreria/img/img3.jpeg' %}" class="img-fluid w-100 h-200" alt="Portafolio 1">
-                        <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
-                            <p>Proyecto 1</p>
-                        </div>
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img3.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="portfolio-item position-relative">
-                        <img src="{% static 'libreria/img/img4.jpeg' %}" class="img-fluid w-100 h-200" alt="Portafolio 1">
-                        <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
-                            <p>Proyecto 1</p>
-                        </div>
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img4.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="portfolio-item position-relative">
-                        <img src="{% static 'libreria/img/img5.jpeg' %}" class="img-fluid w-100 h-200" alt="Portafolio 1">
-                        <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
-                            <p>Proyecto 1</p>
-                        </div>
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img5.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="portfolio-item position-relative">
-                        <img src="{% static 'libreria/img/img6.jpeg' %}" class="img-fluid w-100 h-200" alt="Portafolio 1">
-                        <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
-                            <p>Proyecto 1</p>
-                        </div>
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img6.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="portfolio-item position-relative">
-                        <img src="{% static 'libreria/img/img7.jpeg' %}" class="img-fluid w-100 h-200" alt="Portafolio 1">
-                        <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
-                            <p>Proyecto 1</p>
-                        </div>
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img7.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="portfolio-item position-relative">
-                        <img src="{% static 'libreria/img/img8.jpeg' %}" class="img-fluid w-100 h-200" alt="Portafolio 1">
-                        <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white" style="transform: scale(0); transition: transform .5s;">
-                            <p>Proyecto 1</p>
-                        </div>
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img8.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
                     </div>
                 </div>
-                <!-- Repetir bloques de .portfolio-item para más imágenes -->
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img2.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
+                        <img src="{% static 'libreria/img/img2.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
+                    </div>
+                </div>
+                <!-- Agregar más tarjetas aquí -->
             </div>
         </div>
     </section>
+    
+    
 
     <!-- Clientes -->
     <section id="clientes" class="container my-5">
@@ -159,7 +144,7 @@
                 <div class="card bg-secondary text-white text-center p-3">
                     <img src="{% static 'libreria/img/tofoPerfil.jpeg' %}" class="card-img-top rounded-circle mx-auto my-3" style="width:100px; height:100px;" alt="Cliente 1">
                     <div class="card-body">
-                        <p>Testimonio del cliente 1</p>
+                        <p>La web de El Gran Poeta es intuitiva y fácil de usar. Encontré rápidamente el libro que estaba buscando y el proceso de compra fue rápido y seguro. Además, los envíos llegan puntuales y en excelentes condiciones. Definitivamente volveré a comprar aquí.</p>
                     </div>
                 </div>
             </div>
@@ -167,7 +152,7 @@
                 <div class="card bg-secondary text-white text-center p-3">
                     <img src="{% static 'libreria/img/tofoPerfil.jpeg' %}" class="card-img-top rounded-circle mx-auto my-3" style="width:100px; height:100px;" alt="Cliente 2">
                     <div class="card-body">
-                        <p>Testimonio del cliente 2</p>
+                        <p>Mi experiencia comprando en El Gran Poeta ha sido fantástica. La variedad de libros es impresionante, y el servicio al cliente me ayudó a elegir el mejor regalo. La página es clara, y los precios son muy competitivos. ¡Recomendado!</p>
                     </div>
                 </div>
             </div>
@@ -205,7 +190,7 @@
                 </div>
                 <div class="col-md-4">
                     <h4>Contacto</h4>
-                    <p>Email: contacto@ejemplo.com</p>
+                    <p>elgranpoeta@gmail.com</p>
                 </div>
                 <div class="col-md-4">
                     <h4>Síguenos</h4>
