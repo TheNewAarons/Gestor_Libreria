@@ -7,6 +7,11 @@ from Libros.models import Libro
 from django.urls import reverse_lazy
 # Create your views here.
 
+
+def base(request):
+    return render(request, 'Libros/base_libros.html')
+
+
 class LibroListView(ListView):
     model = Libro
     template_name = 'libros/libros_list.html'

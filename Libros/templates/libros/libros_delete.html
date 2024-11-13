@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Libreria El Gran Poeta</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    {% load static %}
-    <link rel="shortcut icon" href="{% static 'libreria/img/logo.jpeg' %}" type="image/x-icon">
-</head>
+{% extends 'Libros/base_libros.html' %}
+
+{% block content %}
 <body>
     {% if libros %}
-        <h2>Eliminar libro</h2>
-        <p>Esta seguro de eliminar el libro {{libros.title}}?</p>
+        <h2 class="text-center mb-4 text-white">Eliminar libro</h2>
+        <p class="text-center mb-4 text-white" mb-4>Esta seguro de eliminar el libro {{libros.title}}?</p>
         <form method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -22,7 +13,5 @@
     {% else %}
         <h2>Libro no encontrado</h2>
     {% endif %}
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
-</html>
+{% endblock content %}

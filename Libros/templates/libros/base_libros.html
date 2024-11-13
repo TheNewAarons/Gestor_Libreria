@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libreria El Gran Poeta</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'libreria/css/style_base_libros.css' %}">
+    <link rel="shortcut icon" href="{% static 'libreria/img/logo.jpeg' %}" type="image/x-icon">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">El Gran Poeta</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" type="submit"><i class="bi bi-box-arrow-right"></i>LOGOUT</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Bloque de contenido -->
+<div class="container mt-5 pt-5">
+    
+    {% block content %}
+
+    <div class="row">
+        <!-- Módulo 1 -->
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'list' %}" class="module-card">
+                <div class="module-icon"><i class="bi bi-book"></i></div>
+                <div class="module-text">
+                    <h5>Listado Libros</h5>
+                    <p>Opciones para hacer Gestion de Libros</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Módulo 2 -->
+        <div class="col-md-4 mb-3">
+            <a href="/modulo2" class="module-card">
+                <div class="module-icon"><i class="fas fa-cogs"></i></div>
+                <div class="module-text">
+                    <h5>Módulo 2</h5>
+                    <p>Descripción del módulo 2</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Módulo 3 -->
+        <div class="col-md-4 mb-3">
+            <a href="/modulo3" class="module-card">
+                <div class="module-icon"><i class="fas fa-users"></i></div>
+                <div class="module-text">
+                    <h5>Módulo 3</h5>
+                    <p>Descripción del módulo 3</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    {% endblock %}
+
+</div>
+
+<!-- jQuery, Bootstrap JS y Smooth Scroll -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

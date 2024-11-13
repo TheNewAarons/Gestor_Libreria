@@ -1,0 +1,51 @@
+/* Estilos adicionales para navbar */
+body {
+    background: linear-gradient(135deg, #000000   0%, #2C3E50   100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.navbar {
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro y semitransparente */
+}
+.navbar-nav .nav-link {
+    color: #f8f9fa !important;
+    transition: color 0.3s;
+}
+.navbar-nav .nav-link:hover {
+    color: #ffd700 !important; /* Cambio a dorado */
+}
+.navbar-brand {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: #ffd700 !important;
+}
+.navbar-toggler {
+    border-color: #ffd700;
+}
+
+/* Estilos adicionales para módulos */
+.module-card {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    transition: background-color 0.3s;
+}
+.module-card:hover {
+    background-color: #ffffff1c;
+}
+.module-icon {
+    font-size: 80px;
+    margin-right: 15px;
+    color: #ffffff;
+}
+.module-text {
+    flex: 1;
+    color: #ffd700 !important;
+}
+.module-text p {
+    color: #ffffff;
+}
