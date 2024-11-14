@@ -9,7 +9,11 @@ class Editorial(models.Model):
     def __str__(self):
         return self.name
     
-
+class Users(models.Model):
+    username = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=100)
+    rol = models.CharField(max_length=100)
 class Author(models.Model):
     name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
