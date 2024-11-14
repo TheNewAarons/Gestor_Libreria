@@ -28,7 +28,7 @@
                     <div class="d-flex" role="search">
                         <form action="{% url 'logout' %}" method="post">
                             {% csrf_token %}
-                            <button class="btn btn-dark" type="submit"><i class="bi bi-box-arrow-right"></i>LOGOUT</button>
+                            <button class="btn btn-outline-light" style="background-color: transparent; border-color: transparent; color: rgb(255, 255, 255);" type="submit"><i class="bi bi-box-arrow-right"></i>LOGOUT</button>
                         </form>
                 </li>
             </ul>
@@ -55,17 +55,20 @@
 
         <!-- Módulo 2 -->
         <div class="col-md-4 mb-3">
-
             <a href="{% url 'bodegas_list' %}" class="module-card">
                 <div class="module-icon"><i class="bi bi-box"></i></div>
                 <div class="module-text">
                     <h5>Gestion Bodegas</h5>
                     <p>Opciones para hacer Gestion de bodegas</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
             <a href="{% url 'editorialList' %}" class="module-card">
                 <div class="module-icon"><i class="bi bi-journal-medical"></i></div>
                 <div class="module-text">
                     <h5>Gestion editoriales</h5>
-                    <p>En este modulo, se hara la creacion de editoriales y las determinadas accion que se requieran</p>
+                    <p>Opciones para hacer Gestion de editoriales</p>
                 </div>
             </a>
         </div>

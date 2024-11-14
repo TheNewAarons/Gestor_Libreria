@@ -43,7 +43,7 @@
                             <div class="d-flex" role="search">
                                 <form action="{% url 'logout' %}" method="post">
                                     {% csrf_token %}
-                                    <button class="btn btn-dark" type="submit"><i class="bi bi-box-arrow-right"></i>LOGOUT</button>
+                                    <button class="btn btn-outline-light" style="background-color: transparent; border-color: transparent; color: rgb(255, 255, 255);" type="submit"><i class="bi bi-box-arrow-right"></i>LOGOUT</button>
                                 </form>
                         </li>
                         {% else %}
@@ -86,66 +86,62 @@
     </section>
 
     <!-- Portafolio -->
-    <section id="portafolio" class="portfolio bg-light py-5">
+    <section id="portafolio" class="container py-5">
         <div class="container custom-container">
             <h2 class="text-center mb-5">Productos Estrellas</h2>
-            <div class="d-flex justify-content-center flex-wrap gap-3">
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img1.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
+            <div class="row justify-content-center">
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-lg border-0">
+                        <img src="{% static 'libreria/img/img2.jpeg' %}" class="card-img-top" alt="Producto 1" style="object-fit: cover; height: 200px;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Producto 1</h5>
+                            <p class="card-text">Descripción breve del producto.</p>
+                            <a href="#" class="btn btn-primary btn-sm">Ver más</a>
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img2.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-lg border-0">
+                        <img src="{% static 'libreria/img/img1.jpeg' %}" class="card-img-top" alt="Producto 1" style="object-fit: cover; height: 200px;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Producto 1</h5>
+                            <p class="card-text">Descripción breve del producto.</p>
+                            <a href="#" class="btn btn-primary btn-sm">Ver más</a>
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img3.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-lg border-0">
+                        <img src="{% static 'libreria/img/img3.jpeg' %}" class="card-img-top" alt="Producto 1" style="object-fit: cover; height: 200px;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Producto 1</h5>
+                            <p class="card-text">Descripción breve del producto.</p>
+                            <a href="#" class="btn btn-primary btn-sm">Ver más</a>
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img4.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
+                <div class="container py-5">
+                    <h2 class="text-center mb-4">Productos Estrellas</h2>
+                    <div class="row justify-content-center">
+                        {% for book in featured_books %}
+                        <div class="col-md-3 mb-4">
+                            <div class="card shadow-lg border-0">
+                                <img src="{{ book.cover_url }}" class="card-img-top" style="height: 225px; object-fit: cover;">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{ book.title }}</h5>
+                                    <p class="card-text">{{ book.author }}</p>
+                                    <a href="{{ book.url }}" class="btn btn-primary btn-sm">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img5.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img6.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img7.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img8.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img2.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-lg portfolio-item" style="height: 450px; width: 300px; overflow: hidden;">
-                        <img src="{% static 'libreria/img/img2.jpeg' %}" class="w-100 h-100" alt="Foto" style="object-fit: cover;">
-                    </div>
-                </div>
+                
                 <!-- Agregar más tarjetas aquí -->
             </div>
         </div>
     </section>
-    
-    
 
     <!-- Clientes -->
     <section id="clientes" class="container my-5">

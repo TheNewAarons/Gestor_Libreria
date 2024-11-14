@@ -73,3 +73,14 @@ section {
 .custom-container {
     max-width: 95%; /* Ajusta el porcentaje según lo que necesitas */
 }
+
+
+.card:hover img {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .card-body {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}
