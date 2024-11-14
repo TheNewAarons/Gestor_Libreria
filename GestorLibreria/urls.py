@@ -9,6 +9,8 @@ urlpatterns = [
     path('base/', views.base, name='base'),
     path('Libros/', include('Libros.urls')),
     path('Bodegas/', include('Bodegas.urls')),
+    path('Editoriales/', include('Editoriales.urls')),
+    path('accounts', include('django.contrib.auth.urls'))
 ]
 
 

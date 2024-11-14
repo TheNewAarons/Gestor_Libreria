@@ -11,6 +11,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'libreria/css/style_base_libros.css' %}">
     <link rel="shortcut icon" href="{% static 'libreria/img/logo.jpeg' %}" type="image/x-icon">
+    <link rel="stylesheet"  href="{% static 'Editorales/css/formStyle.css' %}">
 </head>
 <body>
 
@@ -24,7 +25,11 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" type="submit"><i class="bi bi-box-arrow-right"></i>LOGOUT</a>
+                    <div class="d-flex" role="search">
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-dark" type="submit"><i class="bi bi-box-arrow-right"></i>LOGOUT</button>
+                        </form>
                 </li>
             </ul>
         </div>
@@ -50,11 +55,17 @@
 
         <!-- Módulo 2 -->
         <div class="col-md-4 mb-3">
+
             <a href="{% url 'bodegas_list' %}" class="module-card">
                 <div class="module-icon"><i class="bi bi-box"></i></div>
                 <div class="module-text">
                     <h5>Gestion Bodegas</h5>
                     <p>Opciones para hacer Gestion de bodegas</p>
+            <a href="{% url 'editorialList' %}" class="module-card">
+                <div class="module-icon"><i class="bi bi-journal-medical"></i></div>
+                <div class="module-text">
+                    <h5>Gestion editoriales</h5>
+                    <p>En este modulo, se hara la creacion de editoriales y las determinadas accion que se requieran</p>
                 </div>
             </a>
         </div>
