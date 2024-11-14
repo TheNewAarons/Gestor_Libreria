@@ -1,15 +1,16 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="card p-4 shadow">
-        <h2 class="text-center mb-4 font-family: 'Lora', serif;">Agregar Producto a Bodega</h2>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-success">Agregar</button>
-            </form>
-    </div>
+
+<div class="text-white">
+    <h2 class="text-center mb-4 font-family: 'Lora', serif;">Agregar Producto a Bodega</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Agregar</button>
+            <a class="btn btn-dark" href="{% url 'bodegas_list' %}">Volver</a>
+        </form>
 </div>
+
 
 {% endblock %}

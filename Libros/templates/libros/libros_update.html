@@ -1,8 +1,8 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="card p-4 shadow">
+
+    <div class="text-white">
         <h2>Editar Producto</h2>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -11,5 +11,5 @@
             <a class="btn btn-dark" href="{% url 'list' %}">Volver</a>
         </form>
     </div>
-</div>
+
 {% endblock %}

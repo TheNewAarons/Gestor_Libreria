@@ -1,15 +1,14 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="card p-4 shadow">
-        <h2>Editar Bodega</h2>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-success">Actializar</button>
-            <a class="btn btn-dark" href="{% url 'bodegas_list' %}">Volver</a>
-        </form>
-    </div>
-</div>
+<body class="text-white">
+    <h2>Editar Bodega</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success">Actializar</button>
+        <a class="btn btn-dark" href="{% url 'bodegas_list' %}">Volver</a>
+    </form>
+</body>
+
 {% endblock %}

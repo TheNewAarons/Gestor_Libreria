@@ -1,21 +1,19 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="card p-4 shadow">
-        <h2 class="text-center mb-4 font-family: 'Lora', serif;">Creacion de Productos</h2>
-        <form method="post" class="p-4 border rounded shadow-sm bg-light" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ form.as_p }}
-            </div>
-            <div class="d-flex justify-content-between mt-3">
-                <button class="btn btn-success">Crear</button>
-                <a class="btn btn-dark" href="{% url 'list' %}">Volver</a>
-            </div>
-        </form>
-    </div>
-</div>
+
+    <h2 class="text-center mb-4 font-family: 'Lora', serif; text-white">Creacion de Productos</h2>
+    <form method="post" class="text-white" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+            <button class="btn btn-success">Crear</button>
+            <a class="btn btn-dark" href="{% url 'list' %}">Volver</a>
+        </div>
+    </form>
+
 {% endblock %}
 
 

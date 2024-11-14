@@ -2,15 +2,15 @@
 
 
 {% block content %}
-<div class="container">
-    <div class="card p-4 shadow">
+
+    <div class="text-white">
         <h2>Editar Editorial</h2>
         <form method='post'>
             {% csrf_token %}
             {{ form.as_p }}
             <button type='submit' class='btn btn-success'>Editar Editorial</button>
-            <a href="{% url 'editorialList' %}" class='btn btn-info'>Volver</a>
+            <a href="{% url 'editorialList' %}" class='btn btn-dark'>Volver</a>
         </form>
     </div>
-</div>
+
 {% endblock  %}
