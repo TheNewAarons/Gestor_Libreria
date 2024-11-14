@@ -9,7 +9,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="btn btn-info" href="{% url 'usuarioCreate' %}">Crear</a>
+                        <a class="btn btn-info" href="{% url 'userCreate' %}">Crear</a>
                     </li>
                     <li class="nav-item ms-3">
                         <a class="btn btn-dark"info href="{% url 'base' %}">Volver al inicio</a>
@@ -26,26 +26,28 @@
                 <th scope="col">ID</th>
                 <th scope="col">UserName</th>
                 <th scope="col">Email</th>
+                <th scope="col">Rol</th>
                 <th scope="col">Actions</th>
                 
             </tr>
         </thead>
         <tbody>
-            {% for u in Usuarios %}
+            {% for u in usuarios %}
             <tr>
                 <td>{{ u.id }}</td>
                 <td>{{ u.username }}</td>
-                <td>{{ u.mail }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{u.rol}}</td>
                 <td>
                     <div class="d-flex">
-                        <a class="btn btn-info btn-sm m-1" href="{% url 'usuarioDetail' u.id %}" title="Ver"><i class="bi bi-eye"></i></a>
-                        <a class="btn btn-warning btn-sm m-1" href="{% url 'usuarioUpdate' u.id %}" title="Editar"><i class="bi bi-pencil"></i></a>
-                        <a class="btn btn-danger btn-sm m-1" href="{% url 'usuarioDelete' u.id %}" title="Eliminar"><i class="bi bi-trash"></i></a>
+                        <a class="btn btn-info btn-sm m-1" href="{% url 'userDetail' u.id %}" title="Ver"><i class="bi bi-eye"></i></a>
+                        <a class="btn btn-warning btn-sm m-1" href="{% url 'userUpdate' u.id %}" title="Editar"><i class="bi bi-pencil"></i></a>
+                        <a class="btn btn-danger btn-sm m-1" href="{% url 'userDelete' u.id %}" title="Eliminar"><i class="bi bi-trash"></i></a>
                     </div>
                 </td>
             </tr>
             {% empty %}
-            <h2>Aun no hay Editorales Creadas</h2>
+            <h2>Aun no hay Usuarios Creados</h2>
             {% endfor %}
             
         </tbody>

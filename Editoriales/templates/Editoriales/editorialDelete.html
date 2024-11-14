@@ -3,7 +3,7 @@
 <div class='container'>
     <form  method='post'>
         {% csrf_token %}
-        <h2 style='color : #ffd700' class='mb-3'>Seguro que desea eliminar el menu?</h2>
+        <h2 style='color : #ffd700' class='mb-3'>¿Seguro que desea eliminar la Editorial?</h2>
         <button type='submit' class='btn btn-danger'>Eliminar Menu</button>
         <a href="{% url 'editorialList' %}" class='btn btn-info'>Volver</a>
     </form>
