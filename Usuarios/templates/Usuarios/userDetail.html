@@ -1,0 +1,25 @@
+{% extends 'Libreria/Base_modulos.html' %}
+
+{% block content %}
+
+
+<div class="text-white">
+    {% if usuario %}
+    <h2 class="text-center mb-4 font-family: 'Lora', serif;">Detalles del usuario {{ usuario.id }}</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <p><b>UserName:</b> {{ usuario.username}}</p>
+            <p><b>Email:</b> {{ usuario.email }}</p>
+            <p><b>Rol:</b> {{usuario.rol}}</p>
+            
+        </div>
+    </div>
+    {% else %}
+    <h2 class="text-center text-danger">usuario no encontrado</h2>
+    {% endif %}
+</div>
+<div class="text-center mt-4">
+    <a class="btn btn-dark" href="{% url 'userList' %}">Volver</a>
+</div>
+
+{% endblock %}

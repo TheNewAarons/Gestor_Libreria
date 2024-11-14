@@ -1,0 +1,14 @@
+{% extends "Libreria/Base_Modulos.html" %}
+
+
+{% block content %}
+<div class="text-white">
+    <h2 >Creacion Usuarios</h2>
+    <form method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type='submit' class='btn btn-success'>Crear Usuario</button>
+        <a href="{% url 'userList' %}" class='btn btn-dark'>Volver</a>
+    </form>
+</div>
+{% endblock  %}
