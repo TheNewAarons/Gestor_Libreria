@@ -1,8 +1,8 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-<h2 class="text-center mb-4 font-family: 'Lora', serif; text-white">Creacion de Bodegas</h2>
-<form method="post" class="text-white" enctype="multipart/form-data">
+<h2 class="text-center mb-4 font-family: 'Lora', serif;">Creacion de Bodegas</h2>
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
         {{ form.as_p }}

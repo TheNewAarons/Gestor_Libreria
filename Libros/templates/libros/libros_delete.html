@@ -3,8 +3,8 @@
 {% block content %}
 <body>
     {% if libros %}
-        <h2 class="text-center mb-4 text-white">Eliminar libro</h2>
-        <p class="text-center mb-4 text-white" mb-4>Esta seguro de eliminar el libro {{libros.title}}?</p>
+        <h2 class="text-center mb-4 ">Eliminar libro</h2>
+        <p class="text-center mb-4 " mb-4>Esta seguro de eliminar el libro {{libros.title}}?</p>
         <form method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Eliminar</button>

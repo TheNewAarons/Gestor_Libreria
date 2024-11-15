@@ -3,8 +3,8 @@
 {% block content %}
 <body>
     {% if bodega %}
-        <h2 class="text-center mb-4 text-white">Eliminar Bodega</h2>
-        <p class="text-center mb-4 text-white" mb-4>Esta seguro de eliminar la bodega {{bodega.id}}?</p>
+        <h2 class="text-center mb-4">Eliminar Bodega</h2>
+        <p class="text-center mb-4" mb-4>Esta seguro de eliminar la bodega {{bodega.id}}?</p>
         <form method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Eliminar</button>

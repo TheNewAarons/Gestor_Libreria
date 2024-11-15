@@ -14,6 +14,7 @@ class Users(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
     rol = models.CharField(max_length=100)
+
 class Author(models.Model):
     name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -22,8 +23,13 @@ class Author(models.Model):
         return f"{self.name} {self.last_name}"
 
 class Libro(models.Model):
+    ESTADO_CHOICES = [
+        ('Libro', 'Libro'),
+        ('Revista', 'Revista'),
+        ('Diccionario', 'Diccionario'),
+    ]
     title = models.CharField(max_length=200)
-    tipo = models.CharField(max_length = 100, null=True)
+    tipo = models.CharField(max_length = 100, null=True, choices=ESTADO_CHOICES)
     tamaño = models.PositiveIntegerField(null=True)
     editorial = models.CharField(max_length=100, null=True)
     author = models.CharField(max_length=100)

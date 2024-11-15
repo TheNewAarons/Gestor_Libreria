@@ -2,8 +2,8 @@
 
 {% block content %}
 
-    <h2 class="text-center mb-4 font-family: 'Lora', serif; text-white">Creacion de Productos</h2>
-    <form method="post" class="text-white" enctype="multipart/form-data">
+    <h2 class="text-center mb-4 font-family: 'Lora', serif;">Creacion de Productos</h2>
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             {{ form.as_p }}

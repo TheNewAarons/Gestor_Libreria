@@ -24,7 +24,8 @@
             </div>
         </nav>       
     </header>
-        <table class="table table-striped text-white">
+    <div class="container">
+        <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">ID</th>
@@ -34,9 +35,9 @@
                     <th scope="col">Tiopo de Contenido</th>
                     <th scope="col">Stock</th>
                     <th scope="col">Tamaño</th>
-                    <th scope="col">Acciones</th>
                     <th scope="col">Fecha de Creacion</th>
                     <th scope="col">Fecha de Actualización</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,6 +63,7 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
 </body>
 {% endblock %}
 

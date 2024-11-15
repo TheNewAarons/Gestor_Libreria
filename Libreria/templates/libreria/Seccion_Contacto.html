@@ -1,0 +1,32 @@
+{% extends 'Libreria/Base_modulos.html' %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'libreria/css/style_seccion_contacto.css' %}">
+</head>
+<body>
+    <div class="contact-section">
+        <h2>Contáctanos</h2>
+        <form>
+            <input type="text" name="name" placeholder="Nombre" required>
+            <input type="email" name="email" placeholder="Correo Electrónico" required>
+            <input type="number" name="message" placeholder="Teléfono">
+            <input type="text" name="subject" placeholder="Asunto" required>
+            <textarea name="message" placeholder="Mensaje" rows="5" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+        <div class="contact-info">
+            <p>Oficina: Calle Ejemplo 123, Ciudad, País</p>
+            <p>Teléfono: +56 9 1234 5678</p>
+            <p>Correo: contacto@tusitio.com</p>
+        </div>
+        <div id="map"></div> <!-- Aquí podrías integrar un mapa interactivo -->
+        <div class="social-icons">
+            <i class="bi bi-instagram"></i>
+            <i class="bi bi-facebook"></i>
+            <i class="bi bi-whatsapp"></i>
+        </div>
+    </div>
+</body>
+{% endblock %}

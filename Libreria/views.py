@@ -6,3 +6,6 @@ def home(request):
 
 def base(request):
     return render(request, 'Libreria/Base_Modulos.html')
+
+def contacto(request):
+    return render(request, 'Libreria/Seccion_Contacto.html')

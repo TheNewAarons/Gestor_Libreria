@@ -9,13 +9,13 @@
     transition: color 0.3s;
 }
 .navbar-nav .nav-link:hover {
-    color: #ffd700 !important;
+    color: #F1C40F !important;
     font-weight: bold;
 }
 .navbar-brand {
     font-family: 'Dancing Script', cursive;
     font-size: 1.8rem;
-    color: #ffd700 !important;
+    color: #F1C40F !important;
 }
 header {
     height: 100vh;
@@ -30,13 +30,13 @@ header {
 header h1 {
     font-family: 'Dancing Script', cursive;
     font-size: 4.5rem;
-    color: #ffd700;
+    color: #F1C40F;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 }
 #sobre-nosotros h2, #portafolio h2, #clientes h2 {
     font-family: 'Lora', serif;
     font-size: 3rem;
-    color: #ffd700 !important;
+    color: #F1C40F !important;
 }
 .portfolio-item img {
     transition: transform 0.3s, opacity 0.3s;
@@ -61,7 +61,7 @@ footer {
 }
 footer h4 {
     font-weight: bold;
-    color: #ffd700;
+    color: #F1C40F;
 }
 section {
     margin-top: 100px; /* Espacio superior */

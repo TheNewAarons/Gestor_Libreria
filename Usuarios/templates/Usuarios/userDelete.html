@@ -3,7 +3,7 @@
 <div class='container'>
     <form  method='post'>
         {% csrf_token %}
-        <h2 class='mb-3 text-white'>¿Seguro que desea eliminar el Usuario {{username}}?</h2>
+        <h2 class='mb-3'>¿Seguro que desea eliminar el Usuario {{username}}?</h2>
         <button type='submit' class='btn btn-danger'>Eliminar Usuario</button>
         <a href="{% url 'userList' %}" class='btn btn-dark'>Volver</a>
     </form>
