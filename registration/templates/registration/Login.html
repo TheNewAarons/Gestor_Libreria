@@ -1,22 +1,22 @@
 {%extends 'Libreria/Base_Modulos.html' %}
 
 {%block content %}
-<h2 class="text-white">Iniciar Sesion</h2>
+<h2>Iniciar Sesion</h2>
 <div class="col-md-6 mx-auto">
     <form method="post">
         {%csrf_token%}
         <p>
-            <label class="text-white">Username</label>
+            <label>Username</label>
             <input type="text" name="username" class="form-control" required>
         </p>
         <p>
-            <label class="text-white">Password</label>
+            <label>Password</label>
             <input type="password" name="password" class="form-control" required>
         </p>
         {%if form.non_field_errors%}
-        <p class="text-danger text-white">Usuario y/o contraseñas incorrectas, intente nuevamente</p>
+        <p class="text-danger">Usuario y/o contraseñas incorrectas, intente nuevamente</p>
         {%endif%}
-        <button class='btn btn-info' type='submit'>Entrar</button>
+        <button class='btn btn-success' type='submit'>Entrar</button>
         <a href="{%url 'home'%}" class="btn btn-dark">Volver</a>
     </form>
 </div>
