@@ -1,0 +1,17 @@
+{% extends 'Libreria/Base_modulos.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Importar Productos Desde Excel</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label for="file">Selecciona un archivo:</label>
+        <input type="file" name="file" required>
+        <button type="submit" class="btn btn-success">Subir archivo</button>
+        <a class="btn btn-dark" href="{% url 'base' %}">Volver</a>
+    </form>
+</div>
+
+{% endblock %}
