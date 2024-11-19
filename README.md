@@ -50,4 +50,4 @@ Sistema de Gestión de Inventario de "El gran Poeta"
     Este proyecto es parte del curso Taller de Aplicaciones. Las contribuciones están restringidas a los estudiantes y profesores de INACAP. Si deseas contribuir, por favor sigue los lineamientos del curso y trabaja en colaboración con tu equipo.
 
   Licencia
-    Este proyecto es de uso exclusivo para fines educativos en el curso Taller de Aplicaciones en INACAP.
+    Este proyecto es de uso exclusivo para fines educativos INACAP.
