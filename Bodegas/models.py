@@ -22,10 +22,13 @@ class Bodega(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def _str_(self):
-        return f"Bodega {self.id} - {self.tipo_de_contenido}"
+        return self.nombre
 
 
 class ProductoBodega(models.Model):
     producto = models.ForeignKey(Libro, on_delete=models.CASCADE)
     bodega = models.ForeignKey(Bodega, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
+
+    def _str_(self):
+        return self.bodega

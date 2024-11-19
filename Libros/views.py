@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
@@ -17,7 +17,7 @@ class LibroCreateView(CreateView):
     model = Libro
     template_name = 'libros/libros_create.html'
     form_class = LibroForm
-    success_url = reverse_lazy
+    success_url = reverse_lazy('list')
 
 class LibroDeleteView(DeleteView):
     model = Libro

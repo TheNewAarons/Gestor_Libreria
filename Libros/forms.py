@@ -1,5 +1,6 @@
 from django import forms
-from .models import Libro, Author
+from Usuarios.models import Users
+from .models import Libro
 
 class LibroForm(forms.ModelForm):
     class Meta:
@@ -14,12 +15,8 @@ class LibroForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'portada': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Filtrar usuarios con rol "autor"
+        self.fields['author'].queryset = Users.objects.filter(rol='autor')  # Ajusta el nombre del campo del rol
 
-class AuthorForm(forms.ModelForm):
-    class Meta:
-        model = Author
-        fields = ('name', 'last_name')
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-        }

@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from Libros.models import Editorial
 from Editoriales.forms import EditorialForm
 from django.urls import reverse_lazy
+from Editoriales.models import Editorial
 # Create your views here.
 
 class EditorialListView(ListView):

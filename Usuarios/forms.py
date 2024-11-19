@@ -1,5 +1,6 @@
 from django import forms
-from Libros.models import Users
+
+from Usuarios.models import Users
 
 ROLE_CHOICES = [
     ('bodeguero', 'Bodeguero'),

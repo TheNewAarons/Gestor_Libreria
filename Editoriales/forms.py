@@ -1,5 +1,5 @@
 from django import forms
-from Libros.models import Editorial
+from Editoriales.models import Editorial
 
 class EditorialForm(forms.ModelForm):
     class Meta:
