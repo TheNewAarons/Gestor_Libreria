@@ -5,12 +5,13 @@ from .models import Libro
 class LibroForm(forms.ModelForm):
     class Meta:
         model = Libro
-        fields = ('title', 'description', 'author', 'tipo', 'editorial', 'tamaño', 'portada')
+        fields = ('title', 'description', 'author', 'tipo', 'editorial', 'tamaño','cantidad', 'portada')
         widgets = {
             'tipo': forms.Select(attrs={'class': 'form-control'}),
             'editorial': forms.Select(attrs={'class': 'form-control'}),
             'author': forms.Select(attrs={'class': 'form-control'}),
             'tamaño': forms.TextInput(attrs={'class': 'form-control'}),
+            'cantidad': forms.TextInput(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'portada': forms.ClearableFileInput(attrs={'class': 'form-control'}),
