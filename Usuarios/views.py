@@ -29,8 +29,8 @@ class UsuarioDeleteView(DeleteView):
     success_url = reverse_lazy('userList')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = self.get_object()  # Obtiene el objeto del usuario con la id (pk) de la URL
-        context['username'] = user.username  # Agrega el username al contexto para usarlo en la plantilla
+        user = self.get_object()  # obtiene el objeto del usuario con la id (pk) de la URL
+        context['username'] = user.username  # agrega el username al contexto para usarlo en la plantilla
         return context
     
 class UsuarioDetailView(DetailView):
