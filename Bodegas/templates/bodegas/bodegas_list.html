@@ -1,69 +1,87 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(0, 0, 0, 0);">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="btn btn-primary mr-2" href="{% url 'bodegas_create' %}">Crear Bodega</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-primary mr-2" href="{% url 'agregar_producto_bodega' %}">Agregar Producto a Bodega</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-dark" href="{% url 'base' %}">Volver</a>
-                        </li>
-                    </ul>
-                </div>                
-            </div>
-        </nav>       
-    </header>
-    <div class="container">
-        <table class="table table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Direccion</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Tiopo de Contenido</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Tamaño</th>
-                    <th scope="col">Fecha de Creacion</th>
-                    <th scope="col">Fecha de Actualización</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for t in bodegas %}
-                <tr>
-                    <td>{{ t.id }}</td>
-                    <td>{{ t.nombre }}</td>
-                    <td>{{ t.direction }}</td>
-                    <td>{{ t.estado }}</td>
-                    <td>{{ t.tipo_de_contenido }}</td>
-                    <td>{{ t.nivel_stock }}</td>
-                    <td>{{ t.tamaño_bodega }}</td>
-                    <td>{{ t.created_at }}</td>
-                    <td>{{ t.updated_at }}</td>
-                    <td>
-                        <div class="d-flex">
-                            <a class="btn btn-info btn-sm m-1" href="{% url 'bodegas_detail' t.id %}" title="Ver"><i class="bi bi-eye"></i></a>
-                            <a class="btn btn-warning btn-sm m-1" href="{% url 'bodegas_update' t.id %}" title="Editar"><i class="bi bi-pencil"></i></a>
-                            <a class="btn btn-danger btn-sm m-1" href="{% url 'bodegas_delete' t.id %}" title="Eliminar"><i class="bi bi-trash"></i></a>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+
+<div class="container">
+    <div class="row">
+        <!-- Columna de Cards -->
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'bodegas_create' %}" class="module-card">
+                <div class="module-icon"><i class="bi bi-shop-window"></i></div>
+                <div class="module-text">
+                    <h5>Crear Bodega</h5>
+                    <p>Formulario Para Crear una Bodega</p>
+                </div>
+            </a>
+        </div>  
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'agregar_producto_bodega' %}" class="module-card">
+                <div class="module-icon"><i class="bi bi-arrow-right-circle"></i></div>
+                <div class="module-text">
+                    <h5>Agregar Productos a Bodega</h5>
+                    <p>Formulario Para Agregar Productos a Bodega</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="" class="module-card">
+                <div class="module-icon"><i class="bi bi-arrow-left-circle"></i></div>
+                <div class="module-text">
+                    <h5>Retirar Productos De Bodega</h5>
+                    <p>Formulario Para Retirar Productos de Bodega</p>
+                </div>
+            </a>
+        </div> 
     </div>
-</body>
+
+    <!-- Fila para el listado centrado -->
+    <div class="row">
+        <div>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Tipo de Contenido</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Tamaño</th>
+                        <th scope="col">Fecha de Creación</th>
+                        <th scope="col">Fecha de Actualización</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in bodegas %}
+                    <tr>
+                        <td>{{ t.id }}</td>
+                        <td>{{ t.nombre }}</td>
+                        <td>{{ t.direction }}</td>
+                        <td>{{ t.estado }}</td>
+                        <td>{{ t.tipo_de_contenido }}</td>
+                        <td>{{ t.nivel_stock }}</td>
+                        <td>{{ t.tamaño_bodega }}</td>
+                        <td>{{ t.created_at }}</td>
+                        <td>{{ t.updated_at }}</td>
+                        <td>
+                            <div class="d-flex">
+                                <a class="btn btn-info btn-sm m-1" href="{% url 'bodegas_detail' t.id %}" title="Ver"><i class="bi bi-eye"></i></a>
+                                <a class="btn btn-warning btn-sm m-1" href="{% url 'bodegas_update' t.id %}" title="Editar"><i class="bi bi-pencil"></i></a>
+                                <a class="btn btn-danger btn-sm m-1" href="{% url 'bodegas_delete' t.id %}" title="Eliminar"><i class="bi bi-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-center">
+                <a class="btn btn-dark" href="{% url 'base' %}">Volver</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
 

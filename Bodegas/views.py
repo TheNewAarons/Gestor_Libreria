@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
@@ -13,18 +14,26 @@ def agregar_producto_bodega(request):
     if request.method == 'POST':
         form = ProductoBodegaForm(request.POST)
         if form.is_valid():
-            # Guardar el producto en la bodega
+            # Si el formulario es válido, guardamos el producto
             producto_bodega = form.save()
 
-            # Actualizar el stock total de la bodega
+            # Actualizamos el stock de la bodega
             bodega = producto_bodega.bodega
-            bodega.nivel_stock += producto_bodega.cantidad
+            bodega.nivel_stock += producto_bodega.cantidad  # Suma la cantidad
             bodega.save()
 
+            # Redirigir al listado de bodegas
             return redirect('bodegas_list')
+        else:
+            # Si el formulario no es válido, mostramos el mensaje de error
+            messages.error(request, form.errors)
+
     else:
         form = ProductoBodegaForm()
+
     return render(request, 'Bodegas/agregar_producto_bodega.html', {'form': form})
+
+
 
 class BodegasListView(ListView):
     model = Bodega
