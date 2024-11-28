@@ -1,14 +1,16 @@
 from django import forms
-
+from django.contrib.auth.forms import UserCreationForm #para poder implementar boostrar al form de creacion predeterminado de django
 from Usuarios.models import Users
 
-class UsersForm(forms.ModelForm):
+class UsersForm(UserCreationForm):
     class Meta:
         model = Users
-        fields = ('username', 'email', 'password', 'rol')
+        fields = ('username', 'email', 'password1', 'password2' , 'rol')
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control text-color'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control text-color'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control '}),
-            'rol': forms.Select(attrs={'class': 'form-control '}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'rol': forms.Select(attrs={'class': 'form-control'}),
         }
+
