@@ -10,26 +10,53 @@ from django.urls import reverse_lazy
 
 # Create your views here.
 
+
+
+def bodegas_list(request):
+    search_query = request.GET.get('search', '')  # Capturamos el parámetro 'search'
+    if search_query:
+        bodegas = Bodega.objects.filter(nombre__icontains=search_query)  # Filtra por nombre que contenga el texto
+    else:
+        bodegas = Bodega.objects.all()  # Muestra todas las bodegas si no hay búsqueda
+
+    return render(request, 'Bodegas/bodegas_list.html', {'bodegas': bodegas})
+
+
+
+
+
+def actualizar_estado_bodega(bodega):
+    """
+    Actualiza el estado de la bodega basado en su nivel de stock.
+    - Si el nivel de stock es 0, cambia el estado a 'Bacio' (BA).
+    - Si el nivel de stock es mayor a 0, cambia el estado a 'Ocupado' (OC).
+    """
+    if bodega.nivel_stock == 0:
+        bodega.estado = 'BA'  # Bodega vacía
+    else:
+        bodega.estado = 'OC'  # Bodega ocupada
+    bodega.save()
+
+
+
+
+
 def agregar_producto_bodega(request):
     if request.method == 'POST':
         form = ProductoBodegaForm(request.POST)
         if form.is_valid():
-            # Guardamos el producto en la bodega
             producto_bodega = form.save()
-
-            # Actualizamos el stock de la bodega
             bodega = producto_bodega.bodega
-            bodega.nivel_stock += producto_bodega.cantidad  # Actualizamos el stock de la bodega
+
+            # Actualizamos el nivel de stock
+            bodega.nivel_stock += producto_bodega.cantidad
             bodega.save()
 
-            # Si es necesario, actualizamos la cantidad del libro en el modelo Libro
-            producto_bodega.producto.cantidad -= producto_bodega.cantidad  # Reducimos la cantidad del producto
-            producto_bodega.producto.save()
+            # Llamamos a la función para actualizar el estado de la bodega
+            actualizar_estado_bodega(bodega)
 
-            # Redirigir al listado de bodegas
             return redirect('bodegas_list')
         else:
-            # Si el formulario no es válido, mostramos el mensaje de error
             messages.error(request, form.errors)
     else:
         form = ProductoBodegaForm()
@@ -39,47 +66,38 @@ def agregar_producto_bodega(request):
 
 
 
+
+
+
 def retirar_producto_bodega(request):
     if request.method == 'POST':
         form = ProductoBodegaForm(request.POST)
         if form.is_valid():
-            # Extraemos los datos del formulario
-            bodega = form.cleaned_data['bodega']
-            producto = form.cleaned_data['producto']
-            cantidad_retirar = form.cleaned_data['cantidad']
+            producto_bodega = form.save(commit=False)
+            bodega = producto_bodega.bodega
 
-            # Validamos si la cantidad solicitada es mayor al stock disponible en la bodega
-            try:
-                producto_bodega = ProductoBodega.objects.get(bodega=bodega, producto=producto)
+            # Verificamos que hay suficiente stock antes de retirar
+            if producto_bodega.cantidad > bodega.nivel_stock:
+                messages.error(request, 'No hay suficiente stock en la bodega.')
+                return redirect('retirar_producto_bodega')
 
-                if producto_bodega.cantidad >= cantidad_retirar:
-                    # Reducimos la cantidad en la bodega
-                    producto_bodega.cantidad -= cantidad_retirar
-                    producto_bodega.save()
+            # Actualizamos el nivel de stock
+            bodega.nivel_stock -= producto_bodega.cantidad
+            bodega.save()
 
-                    # Actualizamos el stock de la bodega
-                    bodega.nivel_stock -= cantidad_retirar
-                    bodega.save()
+            # Llamamos a la función para actualizar el estado de la bodega
+            actualizar_estado_bodega(bodega)
 
-                    # Aumentamos la cantidad del producto en el inventario
-                    producto.cantidad += cantidad_retirar
-                    producto.save()
-
-                    messages.success(request, f'Se han retirado {cantidad_retirar} unidades de {producto.title}.')
-                    return redirect('bodegas_list')
-
-                else:
-                    messages.error(request, f'No hay suficiente stock del producto "{producto.title}". Stock disponible: {producto_bodega.cantidad}.')
-            except ProductoBodega.DoesNotExist:
-                messages.error(request, 'El producto no está disponible en esta bodega.')
-
+            producto_bodega.save()
+            return redirect('bodegas_list')
         else:
-            messages.error(request, 'Por favor, corrija los errores en el formulario.')
-
+            messages.error(request, form.errors)
     else:
         form = ProductoBodegaForm()
 
     return render(request, 'Bodegas/retirar_producto_bodega.html', {'form': form})
+
+
 
 
 
@@ -96,11 +114,19 @@ class BodegasListView(ListView):
         context['productos_bodega'] = ProductoBodega.objects.all()  # O filtrado según lo necesites
         return context
 
+
+
+
+
 class BodegasCreateView(CreateView):
     model = Bodega
     template_name = 'Bodegas/bodegas_create.html'
     form_class = BodegasForm
     success_url = reverse_lazy('bodegas_list')
+
+
+
+
 
 class BodegasUpdateView(UpdateView):
     model = Bodega
@@ -108,11 +134,17 @@ class BodegasUpdateView(UpdateView):
     form_class = BodegasForm
     success_url = reverse_lazy('bodegas_list')
 
+
+
+
 class BodegasDeleteView(DeleteView):
     model = Bodega
     template_name = 'Bodegas/bodegas_delete.html'
     context_object_name = 'bodega'
     success_url = reverse_lazy('bodegas_list')
+
+
+
 
 class BodegasDetailView(DetailView):
     model = Bodega
