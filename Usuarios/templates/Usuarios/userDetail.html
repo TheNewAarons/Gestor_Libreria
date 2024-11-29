@@ -1,25 +1,40 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-
-
-<div class="container">
+<div class="container mt-5">
     {% if usuario %}
-    <h2 class="text-center mb-4 font-family: 'Lora', serif;">Detalles del usuario {{ usuario.id }}</h2>
+    <h2 class="text-center mb-5">Detalles del Usuario {{ usuario.username }}</h2>
     <div class="row">
         <div class="col-md-8">
-            <p><b>UserName:</b> {{ usuario.username}}</p>
-            <p><b>Email:</b> {{ usuario.email }}</p>
-            <p><b>Rol:</b> {{usuario.rol}}</p>
-            
+            <div class="card shadow border-0 p-4">
+                <div class="card-body">
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">UserName</h5>
+                        <p class="fs-5 text-dark">{{ usuario.username }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Email</h5>
+                        <p class="fs-5 text-dark">{{ usuario.email }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Rol</h5>
+                        <p class="fs-5 text-dark">{{ usuario.rol }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 text-center">
+            <a class="btn btn-dark" href="{% url 'userList' %}">Volver</a>
         </div>
     </div>
     {% else %}
-    <h2 class="text-center text-danger">usuario no encontrado</h2>
+    <h2 class="text-center text-danger">Usuario no encontrado</h2>
     {% endif %}
 </div>
-<div class="text-center mt-4">
-    <a class="btn btn-dark" href="{% url 'userList' %}">Volver</a>
-</div>
-
 {% endblock %}

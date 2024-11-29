@@ -1,0 +1,14 @@
+{% extends 'Libreria/Base_modulos.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center mb-4">Retirar Producto de Bodega</h2>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Retirar</button>
+        <a class="btn btn-dark" href="{% url 'bodegas_list' %}">Volver</a>
+    </form>
+</div>
+{% endblock %}

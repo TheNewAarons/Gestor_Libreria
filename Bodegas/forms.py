@@ -46,3 +46,15 @@ class ProductoBodegaForm(forms.ModelForm):
                 )
 
         return cleaned_data
+
+class RetirarProductoForm(forms.Form):
+    bodega = forms.ModelChoiceField(queryset=Bodega.objects.all(), required=True)
+    producto_bodega = forms.ModelChoiceField(queryset=ProductoBodega.objects.none(), required=True)
+    cantidad_retirar = forms.IntegerField(min_value=1, required=True)
+
+    def __init__(self, *args, **kwargs):
+        bodega_id = kwargs.pop('bodega_id', None)
+        super().__init__(*args, **kwargs)
+        if bodega_id:
+            # Filtramos los productos por la bodega seleccionada
+            self.fields['producto_bodega'].queryset = ProductoBodega.objects.filter(bodega_id=bodega_id)

@@ -53,3 +53,26 @@ body {
 .module-text p {
     color: #ffffff;
 }
+
+
+.password-container {
+    display: flex;
+    justify-content: space-between; /* Ubica los campos a la izquierda y a la derecha */
+    gap: 20px; /* Espacio entre los campos */
+}
+
+.password-field {
+    flex: 1; /* Ajusta el ancho de los campos, o cámbialo a un valor fijo */
+}
+
+.password-field label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+
+
+input {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    max-width: 500px; /* Ancho máximo para limitarlo */
+}

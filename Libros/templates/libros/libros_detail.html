@@ -1,32 +1,80 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-
-<div class="container">
+<div class="container mt-5">
     {% if libro %}
-    <h2 class="text-center mb-4 font-family: 'Lora', serif;">Detalles de {{ libro.tipo }}</h2>
+    <h2 class="text-center mb-5">Detalles de {{ libro.tipo }}</h2>
     <div class="row">
         <div class="col-md-8">
-            <p><b>Nombre:</b> {{ libro.title }}</p>
-            <p><b>Descripción:</b> {{ libro.description }}</p>
-            <p><b>Autor:</b> {{ libro.author }}</p>
-            <p><b>Editorial:</b> {{ libro.editorial }}</p>
-            <p><b>Tipo:</b> {{ libro.tipo }}</p>
-            <p><b>Tamaño:</b> {{ libro.tamaño }}</p>
-            <p><b>Cantidad</b> {{ libro.cantidad }}</p>
-            <p><b>Fecha Creación:</b> {{ libro.created_at }}</p>
-            <p><b>Fecha Actualización:</b> {{ libro.updated_at }}</p>
+            <div class="card shadow border-0 p-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Información del Libro</h4>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Nombre</h5>
+                        <p class="fs-5 text-dark">{{ libro.title }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Descripción</h5>
+                        <p class="fs-5 text-dark">{{ libro.description }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Autor</h5>
+                        <p class="fs-5 text-dark">{{ libro.author }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Editorial</h5>
+                        <p class="fs-5 text-dark">{{ libro.editorial }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Tipo</h5>
+                        <p class="fs-5 text-dark">{{ libro.tipo }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Tamaño</h5>
+                        <p class="fs-5 text-dark">{{ libro.tamaño }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Cantidad</h5>
+                        <p class="fs-5 text-dark">{{ libro.cantidad }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Fecha de Creación</h5>
+                        <p class="fs-5 text-dark">{{ libro.created_at }}</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5 class="text-uppercase text-secondary">Fecha de Actualización</h5>
+                        <p class="fs-5 text-dark">{{ libro.updated_at }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
+        
         <div class="col-md-4 text-center">
-            <img src="{{ libro.portada.url }}" alt="Portada del libro" class="img-fluid rounded shadow">
+            <img src="{{ libro.portada.url }}" alt="Portada del libro" class="img-fluid rounded shadow-lg mb-3">
+            <a class="btn btn-dark" href="{% url 'list' %}">Volver</a>
         </div>
     </div>
     {% else %}
     <h2 class="text-center text-danger">Libro no encontrado</h2>
     {% endif %}
 </div>
-<div class="text-center mt-4">
-    <a class="btn btn-dark" href="{% url 'list' %}">Volver</a>
-</div>
-   
+
+
 {% endblock %}
