@@ -5,7 +5,7 @@ from Libros.models import Libro
 
 class Bodega(models.Model):
     ESTADO_CHOICES = [
-        ('BA', 'Bacio'),
+        ('VA', 'Vacio'),
         ('OC', 'Ocupado'),
         ('MT', 'Mantenimiento'),
     ]

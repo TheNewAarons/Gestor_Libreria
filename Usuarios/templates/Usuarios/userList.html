@@ -1,57 +1,93 @@
-{% extends "Libreria/Base_Modulos.html" %}
-{% block content %}
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(0, 0, 0, 0);">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="btn btn-primary mr-2" href="{% url 'userCreate' %}">Crear</a>
-                    </li>
-                    <li class="nav-item ms-3">
-                        <a class="btn btn-dark"info href="{% url 'base' %}">Volver</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>       
-</header>
-<div class="container">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">UserName</th>
-                <th scope="col">Email</th>
-                <th scope="col">Rol</th>
-                <th scope="col">Actions</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            {% for u in usuarios %}
-            <tr>
-                <td>{{ u.id }}</td>
-                <td>{{ u.username }}</td>
-                <td>{{ u.email }}</td>
-                <td>{{u.rol}}</td>
-                <td>
-                    <div class="d-flex">
-                        <a class="btn btn-info btn-sm m-1" href="{% url 'userDetail' u.id %}" title="Ver"><i class="bi bi-eye"></i></a>
-                        <a class="btn btn-warning btn-sm m-1" href="{% url 'userUpdate' u.id %}" title="Editar"><i class="bi bi-pencil"></i></a>
-                        <a class="btn btn-danger btn-sm m-1" href="{% url 'userDelete' u.id %}" title="Eliminar"><i class="bi bi-trash"></i></a>
-                    </div>
-                </td>
-            </tr>
-            {% empty %}
-            <h2>Aun no hay Usuarios Creados</h2>
-            {% endfor %}
-            
-        </tbody>
-    </table>
+{% extends "Libreria/Base_Modulos.html" %} {% block content %}
 
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-sm-4 mb-3">
+      <a
+        href="{% url 'userCreate' %}"
+        class="card shadow-sm p-2 h-100 d-flex align-items-center"
+      >
+        <div class="me-3 text-primary fs-3">
+          <i class="bi bi-shop-window"></i>
+        </div>
+        <div>
+          <h6 class="card-title mb-1">Crear Usuario</h6>
+          <p class="text-muted small mb-0">Formulario para crear Usuarios</p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <!-- Barra de búsqueda opcional -->
+  <div class="row mb-4">
+    <div class="col">
+      <form method="GET" action="{% url 'bodegas_list' %}" class="input-group">
+        <input
+          type="text"
+          name="search"
+          class="form-control"
+          placeholder="Buscar bodega..."
+          value="{{ request.GET.search }}"
+        />
+        <button class="btn btn-primary" type="submit">
+          <i class="bi bi-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="table-responsive shadow-sm">
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">UserName</th>
+          <th scope="col">Email</th>
+          <th scope="col">Rol</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in usuarios %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.username }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{u.rol}}</td>
+          <td>
+            <div class="d-flex">
+              <a
+                class="btn btn-info btn-sm m-1"
+                href="{% url 'userDetail' u.id %}"
+                title="Ver"
+                ><i class="bi bi-eye"></i
+              ></a>
+              <a
+                class="btn btn-warning btn-sm m-1"
+                href="{% url 'userUpdate' u.id %}"
+                title="Editar"
+                ><i class="bi bi-pencil"></i
+              ></a>
+              <a
+                class="btn btn-danger btn-sm m-1"
+                href="{% url 'userDelete' u.id %}"
+                title="Eliminar"
+                ><i class="bi bi-trash"></i
+              ></a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <h2>Aun no hay Usuarios Creados</h2>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <!-- Botón de regreso -->
+  <div class="text-center mt-4">
+    <a class="btn btn-dark" href="{% url 'base' %}"
+      ><i class="bi bi-arrow-left-circle"></i> Volver</a
+    >
+  </div>
 </div>
-{% endblock  %}
+
+{% endblock %}
