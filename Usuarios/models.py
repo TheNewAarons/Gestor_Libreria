@@ -9,6 +9,7 @@ class Users(AbstractUser):
         ('Jefe de Bodega', 'Jefe de bodega')
         
     ]
+    username = models.CharField(max_length=100, unique=True)
     rol = models.CharField(max_length=50, choices=ROL_CHOISE, default='Bodeguero')
     groups = models.ManyToManyField(
         'auth.Group',
