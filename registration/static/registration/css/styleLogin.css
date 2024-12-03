@@ -1,0 +1,90 @@
+.login-container {
+    position: relative;
+    z-index: 2; /* Asegurarse de que el formulario esté sobre el fondo */
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background: transparent; /* Fondo transparente oscuro */
+    border: 2px solid rgba(255, 255, 255, .2); /* Bordes sólidos blancos */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para resaltar */
+    text-align: center;
+}
+
+/* Estilo general del contenido dentro del contenedor */
+.login-container * {
+    position: relative;
+}
+
+/* Títulos */
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.login-container .form-group {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex; /* Usamos flexbox para alinear iconos y campos */
+    align-items: center; /* Alinea los elementos verticalmente */
+}
+
+
+/* Estilo de los campos de texto */
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 10px 10px 10px 40px; /* Espacio para el ícono */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.2); /* Fondo semitransparente */
+    color: #fff;
+    line-height: 1.5; /* Alineación del texto */
+}
+
+/* Estilo del placeholder */
+.login-container input::placeholder {
+    color: #ccc;
+}
+
+/* Estilo de los íconos dentro del campo */
+.login-container .form-group i {
+    margin-right: 10px; /* Espacio entre ícono y campo de texto */
+    color: #fff;
+    font-size: 1.2rem;
+    pointer-events: none; /* Para que no bloquee clics en el input */
+}
+
+/* Estilo de los botones */
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-container button:hover {
+    background: #218838;
+}
+
+/* Estilo de los enlaces */
+.login-container a {
+    display: block;
+    margin-top: 10px;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 5px;
+    background: #333;
+}
+
+.login-container a:hover {
+    background: #555;
+}

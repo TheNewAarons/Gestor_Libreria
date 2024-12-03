@@ -16,6 +16,7 @@ urlpatterns = [
     path('Editoriales/', include('Editoriales.urls')),
     path('ImportarProductos/', include('ImportarProductos.urls')),
     path('accounts', include('django.contrib.auth.urls')),
+    path('accounts/login', include('registration.urls')),
     path('users/', include('Usuarios.urls')),
 ]
 

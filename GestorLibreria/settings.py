@@ -126,7 +126,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'Libreria/static'),
-    os.path.join(BASE_DIR,'Editoriales/static'),
+    
+    os.path.join(BASE_DIR,'registration/static')
 
 ]
 MEDIA_URL = '/media/'
