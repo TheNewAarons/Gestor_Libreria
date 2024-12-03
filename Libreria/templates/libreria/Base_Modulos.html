@@ -38,7 +38,9 @@
                         <i class="bi bi-building"></i> Gestión de Bodegas
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                        {% if request.user.rol == 'Jefe de Bodega' %}
                         <li><a class="dropdown-item" href="{% url 'bodegas_create' %}">Agregar Bodega</a></li>
+                        {% endif %}
                         <li><a class="dropdown-item" href="{% url 'bodegas_list' %}">Listar Bodegas</a></li>
                         <li><a class="dropdown-item" href="{% url 'agregar_producto_bodega' %}">Agregar Producto a Bodega</a></li>
                         <li><a class="dropdown-item" href="{% url 'retirar_producto_bodega' %}">Quitar Producto de Bodega</a></li>

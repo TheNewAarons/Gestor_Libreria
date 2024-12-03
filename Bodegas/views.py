@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.contrib import messages
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -7,9 +6,23 @@ from django.shortcuts import render, redirect
 from Bodegas.forms import BodegasForm, ProductoBodegaForm, RetirarProductoForm
 from Bodegas.models import Bodega, ProductoBodega
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 
 # Create your views here.
+class RolRequeridoMixin(UserPassesTestMixin):
+    rol_requerido = 'Jefe de Bodega' 
 
+    #Funcion para obtener el rol del usuario y restringir la vista, igual en las demas ya que va basado en nuestros requerimientos
+    def test_func(self): #Va a evaluar que el usuario corresponda al rol que usemos para las restricciones
+        return self.request.user.rol == self.rol_requerido
+
+    #Funcion para redirigir al usuario que ingrese a la vista sin estar registrado o si inicio sesion con otro rol, hacia una pagina con un mensaje
+    def handle_no_permission(self):
+        return redirect('no_autorizado')
+
+#Funcion para mostrar en una pagina un mensaje sobre el acesso al sistema mediante un error 403
+def no_autorizado(request):
+    return render(request, 'Usuarios/ventanaError.html', status=403)
 
 
 def bodegas_list(request):
@@ -147,11 +160,14 @@ class BodegasListView(ListView):
 
 
 
-class BodegasCreateView(CreateView):
+class BodegasCreateView(RolRequeridoMixin,LoginRequiredMixin,CreateView):
     model = Bodega
     template_name = 'Bodegas/bodegas_create.html'
     form_class = BodegasForm
     success_url = reverse_lazy('bodegas_list')
+    rol_requerido = 'Jefe de Bodega'
+    login_url = 'registration/login.html'
+    redirect_field_name = 'Libreria/Base_Modulos.html'
 
 
 

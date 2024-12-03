@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">Crear Usuario</h2>
+    <h2 class="mb-4">Modificar Usuario</h2>
     <form method="post">
         {% csrf_token %}
         
@@ -39,7 +39,7 @@
         </div>
         
         <div class="d-flex justify-content-between mt-4">
-            <button type="submit" class="btn btn-success">Crear Usuario</button>
+            <button type="submit" class="btn btn-success">Modificar Usuario</button>
             <a href="{% url 'userList' %}" class="btn btn-dark">Volver</a>
         </div>
     </form>
