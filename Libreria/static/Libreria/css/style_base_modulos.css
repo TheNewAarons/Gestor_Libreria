@@ -1,3 +1,29 @@
+body {
+    background-color: #F4F4F4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.navbar {
+    background-color: #2C3E50; /* Fondo oscuro y semitransparente */
+}
+.navbar-nav .nav-link {
+    color: #f8f9fa !important;
+    transition: color 0.3s;
+}
+.navbar-nav .nav-link:hover {
+    color: #F1C40F !important; /* Cambio a dorado */
+}
+.navbar-brand {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: #F1C40F !important;
+}
+.navbar-toggler {
+    border-color: #F1C40F;
+}
+
+
 /* Estilos adicionales para módulos */
 .module-card {
     display: flex;
