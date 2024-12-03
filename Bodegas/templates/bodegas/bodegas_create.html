@@ -1,19 +1,58 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-<h2 class="text-center mb-4 font-family: 'Lora', serif;">Creacion de Bodegas</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-group">
-        {{ form.as_p }}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Creación de Bodegas</h2>
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <!-- Nombre -->
+                    <div class="col-md-6">
+                        <label for="id_nombre">Nombre de la Bodega:</label>
+                        {{ form.nombre }}
+                    </div>
+                    <!-- Dirección -->
+                    <div class="col-md-6">
+                        <label for="id_direction">Dirección:</label>
+                        {{ form.direction }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <!-- Tipo de Contenido -->
+                    <div class="col-md-6">
+                        <label for="id_tipo_de_contenido">Tipo de Contenido:</label>
+                        {{ form.tipo_de_contenido }}
+                    </div>
+                    <!-- Estado -->
+                    <div class="col-md-6">
+                        <label for="id_estado">Estado:</label>
+                        {{ form.estado }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <!-- Tamaño -->
+                    <div class="col-md-6">
+                        <label for="id_tamaño_bodega">Tamaño de la Bodega:</label>
+                        {{ form.tamaño_bodega }}
+                    </div>
+                    <!-- Capacidad -->
+                    <div class="col-md-6">
+                        <label for="id_capacidad">Capacidad:</label>
+                        {{ form.capacidad }}
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Crear
+                    </button>
+                    <a class="btn btn-dark" href="{% url 'bodegas_list' %}">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="d-flex justify-content-between mt-3">
-        <button class="btn btn-success">Crear</button>
-        <a class="btn btn-dark" href="{% url 'bodegas_list' %}">Volver</a>
-    </div>
-</form>
+</div>
 {% endblock %}
-
-
-
-
