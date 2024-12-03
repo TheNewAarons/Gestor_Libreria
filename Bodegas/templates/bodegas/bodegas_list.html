@@ -45,15 +45,6 @@
         </div>
     </div>
 
-    <!-- Barra de búsqueda opcional -->
-    <div class="row mb-4">
-        <div class="col">
-            <form method="GET" action="{% url 'bodegas_list' %}" class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Buscar bodega..." value="{{ request.GET.search }}">
-                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
-            </form>
-        </div>
-    </div>
 
     <!-- Tabla de bodegas -->
     <div class="table-responsive shadow-sm">
@@ -80,7 +71,7 @@
                     <td>{{ t.direction }}</td>
                     <td>
                         <span class="badge 
-                            {% if t.estado == 'BA' %}bg-secondary
+                            {% if t.estado == 'VA' %}bg-secondary
                             {% elif t.estado == 'OC' %}bg-success
                             {% elif t.estado == 'MT' %}bg-warning
                             {% endif %}

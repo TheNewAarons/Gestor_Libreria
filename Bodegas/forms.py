@@ -47,6 +47,7 @@ class ProductoBodegaForm(forms.ModelForm):
 
         return cleaned_data
 
+
 class RetirarProductoForm(forms.Form):
     bodega = forms.ModelChoiceField(queryset=Bodega.objects.all(), required=True)
     producto_bodega = forms.ModelChoiceField(queryset=ProductoBodega.objects.none(), required=True)
@@ -58,3 +59,25 @@ class RetirarProductoForm(forms.Form):
         if bodega_id:
             # Filtramos los productos por la bodega seleccionada
             self.fields['producto_bodega'].queryset = ProductoBodega.objects.filter(bodega_id=bodega_id)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        producto_bodega = cleaned_data.get('producto_bodega')  # Producto en la bodega
+        cantidad_retirar = cleaned_data.get('cantidad_retirar')  # Cantidad solicitada para retirar
+
+        if producto_bodega and cantidad_retirar:
+            # Verificamos que no se retire más de lo que hay en stock en la bodega
+            if cantidad_retirar > producto_bodega.bodega.nivel_stock:
+                raise forms.ValidationError(
+                    f'No hay suficiente stock en la bodega para retirar "{producto_bodega.producto.title}". '
+                    f'Stock disponible en la bodega: {producto_bodega.bodega.nivel_stock}.'
+                )
+
+            # Verificamos que la cantidad solicitada no supere el stock del libro
+            if cantidad_retirar > producto_bodega.producto.cantidad:
+                raise forms.ValidationError(
+                    f'No hay suficiente stock del producto "{producto_bodega.producto.title}". '
+                    f'Stock disponible: {producto_bodega.producto.cantidad}.'
+                )
+
+        return cleaned_data

@@ -4,45 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libreria El Gran Poeta</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
     {% load static %}
     <link rel="stylesheet" href="{% static 'libreria/css/style_base_modulos.css' %}">
     <link rel="shortcut icon" href="{% static 'libreria/img/logo.jpeg' %}" type="image/x-icon">
-    <link rel="stylesheet"  href="{% static 'Editorales/css/formStyle.css' %}">
+    <style>
+        .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .module-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'home' %}">El Gran Poeta</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand me-auto" href="{% url 'home' %}">El Gran Poeta</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav ml-auto">
-                <li class='nav-item'>
-                    {% if request.user.is_authenticated %}
-                        <span class="navbar-text">User: {{username}} Rol: {{rol}}</span>
-                    {% endif %}
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-building"></i> Gestión de Bodegas
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                        <li><a class="dropdown-item" href="{% url 'bodegas_create' %}">Agregar Bodega</a></li>
+                        <li><a class="dropdown-item" href="{% url 'bodegas_list' %}">Listar Bodegas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'agregar_producto_bodega' %}">Agregar Producto a Bodega</a></li>
+                        <li><a class="dropdown-item" href="{% url 'retirar_producto_bodega' %}">Quitar Producto de Bodega</a></li>
+                        <li><a class="dropdown-item" href="#">Listar Productos en Bodega</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-people"></i> Gestión de Usuarios
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                        <li><a class="dropdown-item" href="{% url 'userCreate' %}">Agregar Usuario</a></li>
+                        <li><a class="dropdown-item" href="{% url 'userList' %}">Listar Usuarios</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-book"></i> Gestión de Editoriales
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+                        <li><a class="dropdown-item" href="{% url 'editorialCreate' %}">Agregar Editorial</a></li>
+                        <li><a class="dropdown-item" href="{% url 'editorialList' %}">Listar Editoriales</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink6" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-box-seam"></i> Gestión de Productos
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink6">
+                        <li><a class="dropdown-item" href="{% url 'create' %}">Agregar Producto</a></li>
+                        <li><a class="dropdown-item" href="{% url 'list' %}">Listar Productos</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-file-earmark-text"></i> Generador de Informes
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink4">
+                        <li><a class="dropdown-item" href="#">Informe de Ventas</a></li>
+                        <li><a class="dropdown-item" href="#">Informe de Inventario</a></li>
+                        <li><a class="dropdown-item" href="#">Informe de Usuarios</a></li>
+                        <li><a class="dropdown-item" href="#">Informe Personalizado</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink5" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-plus-circle"></i> Insertar Productos
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink5">
+                        <li><a class="dropdown-item" href="#">Agregar Libro</a></li>
+                        <li><a class="dropdown-item" href="#">Agregar Revista</a></li>
+                        <li><a class="dropdown-item" href="#">Agregar Material Educativo</a></li>
+                        <li><a class="dropdown-item" href="#">Importar Productos</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <div class="d-flex" role="search">
-                        
                         <a class="nav-link" href="{% url 'contacto' %}">Reportar Error</a>
-                        <form action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                            <button class="btn btn-outline-light" style="background-color: transparent; border-color: transparent; color: rgb(255, 255, 255);" type="submit"><i class="bi bi-box-arrow-right"></i> LOGOUT</button>
-                        </form>
                     </div>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<section class="user-info bg-light py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+        {% if request.user.is_authenticated %}
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user-circle mr-3" style="font-size: 1.5rem;"></i>
+                <span>
+                    <strong>User:</strong> {{ username }} | <strong>Rol:</strong> {{ rol }}
+                </span>
+            </div>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button  type="submit">
+                    <i class="bi bi-box-arrow-right"></i> LOGOUT
+                </button>
+            </form>
+        {% else %}
+            <span>No estás autenticado.</span>
+        {% endif %}
+    </div>
+</section>
+
 
 <!-- Bloque de contenido -->
 <div class="container mt-5 pt-5">
@@ -51,18 +142,18 @@
 
     <div class="row">
         <!-- Módulo 1 -->
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 mb-4">
             <a href="{% url 'list' %}" class="module-card">
                 <div class="module-icon"><i class="bi bi-book"></i></div>
                 <div class="module-text">
                     <h5>Gestion Productos</h5>
-                    <p>Opciones para hacer Gestion de productos</p>
+                    <p>Administra las bodegas y su inventario</p>
                 </div>
             </a>
         </div>
 
         <!-- Módulo 2 -->
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 mb-4">
             <a href="{% url 'bodegas_list' %}" class="module-card">
                 <div class="module-icon"><i class="bi bi-box"></i></div>
                 <div class="module-text">
@@ -71,7 +162,9 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4 mb-3">
+
+        <!-- Módulo 3 -->
+        <div class="col-md-4 mb-4">
             <a href="{% url 'editorialList' %}" class="module-card">
                 <div class="module-icon"><i class="bi bi-journal-medical"></i></div>
                 <div class="module-text">
@@ -81,8 +174,8 @@
             </a>
         </div>
 
-        <!-- Módulo 3 -->
-        <div class="col-md-4 mb-3">
+        <!-- Módulo 4 -->
+        <div class="col-md-4 mb-4">
             <a href="{% url 'userList' %}" class="module-card">
                 <div class="module-icon"><i class="bi bi-people"></i></div>
                 <div class="module-text">
@@ -92,8 +185,8 @@
             </a>
         </div>
 
-        <!-- Módulo 4 -->
-        <div class="col-md-4 mb-3">
+        <!-- Módulo 5 -->
+        <div class="col-md-4 mb-4">
             <a href="{% url 'importar_productos' %}" class="module-card">
                 <div class="module-icon"><i class="bi bi-arrow-up-circle"></i></div>
                 <div class="module-text">
@@ -103,8 +196,8 @@
             </a>
         </div>
 
-        <!-- Módulo 5 -->
-        <div class="col-md-4 mb-3">
+        <!-- Módulo 6 -->
+        <div class="col-md-4 mb-4">
             <a href="#" class="module-card">
                 <div class="module-icon"><i class="bi bi-file-earmark-arrow-down"></i></div>
                 <div class="module-text">
@@ -122,5 +215,5 @@
 <!-- jQuery, Bootstrap JS y Smooth Scroll -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </html>

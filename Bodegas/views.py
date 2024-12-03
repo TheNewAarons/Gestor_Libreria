@@ -32,7 +32,7 @@ def actualizar_estado_bodega(bodega):
     - Si el nivel de stock es mayor a 0, cambia el estado a 'Ocupado' (OC).
     """
     if bodega.nivel_stock == 0:
-        bodega.estado = 'BA'  # Bodega vacía
+        bodega.estado = 'VA'  # Bodega vacía
     else:
         bodega.estado = 'OC'  # Bodega ocupada
     bodega.save()
@@ -45,16 +45,28 @@ def agregar_producto_bodega(request):
     if request.method == 'POST':
         form = ProductoBodegaForm(request.POST)
         if form.is_valid():
-            producto_bodega = form.save()
-            bodega = producto_bodega.bodega
+            producto_bodega = form.save(commit=False)
+            libro = producto_bodega.producto  # Relación con el producto (libro)
+            bodega = producto_bodega.bodega  # Relación con la bodega
 
-            # Actualizamos el nivel de stock
+            # Verificamos si hay suficiente stock del libro
+            if producto_bodega.cantidad > libro.cantidad:
+                messages.error(request, f'No hay suficiente stock disponible del producto "{libro.title}". Stock disponible: {libro.cantidad}')
+                return redirect('agregar_producto_bodega')
+
+            # Actualizamos el stock del libro: restamos la cantidad que se va a agregar a la bodega
+            libro.cantidad -= producto_bodega.cantidad
+            libro.save()
+
+            # Actualizamos el nivel de stock de la bodega: aumentamos la cantidad que se va a agregar a la bodega
             bodega.nivel_stock += producto_bodega.cantidad
             bodega.save()
 
-            # Llamamos a la función para actualizar el estado de la bodega
+            # Llamamos a la función para actualizar el estado de la bodega (si es necesario)
             actualizar_estado_bodega(bodega)
 
+            # Guardamos la relación entre el libro y la bodega
+            producto_bodega.save()
             return redirect('bodegas_list')
         else:
             messages.error(request, form.errors)
@@ -69,26 +81,39 @@ def agregar_producto_bodega(request):
 
 
 
+
+
+
 def retirar_producto_bodega(request):
     if request.method == 'POST':
         form = ProductoBodegaForm(request.POST)
         if form.is_valid():
             producto_bodega = form.save(commit=False)
-            bodega = producto_bodega.bodega
+            libro = producto_bodega.producto  # Relación con el libro
+            bodega = producto_bodega.bodega  # Relación con la bodega
 
-            # Verificamos que hay suficiente stock antes de retirar
+            # Verificamos que hay suficiente stock en la bodega
             if producto_bodega.cantidad > bodega.nivel_stock:
-                messages.error(request, 'No hay suficiente stock en la bodega.')
+                messages.error(request, f'No hay suficiente stock en la bodega para retirar el producto "{libro.title}". Stock disponible en la bodega: {bodega.nivel_stock}')
                 return redirect('retirar_producto_bodega')
 
-            # Actualizamos el nivel de stock
+            # Verificamos que el libro tiene suficiente cantidad disponible
+            if producto_bodega.cantidad > libro.cantidad:
+                messages.error(request, f'No hay suficiente stock del producto "{libro.title}". Stock disponible: {libro.cantidad}')
+                return redirect('retirar_producto_bodega')
+
+            # Actualizamos el stock del libro: aumentamos la cantidad de producto disponible en el libro
+            libro.cantidad += producto_bodega.cantidad
+            libro.save()
+
+            # Actualizamos el nivel de stock de la bodega: restamos la cantidad que se retira
             bodega.nivel_stock -= producto_bodega.cantidad
             bodega.save()
 
-            # Llamamos a la función para actualizar el estado de la bodega
+            # Llamamos a la función para actualizar el estado de la bodega (si es necesario)
             actualizar_estado_bodega(bodega)
 
-            producto_bodega.save()
+            producto_bodega.save()  # Guardamos la relación entre el libro y la bodega
             return redirect('bodegas_list')
         else:
             messages.error(request, form.errors)
@@ -96,6 +121,10 @@ def retirar_producto_bodega(request):
         form = ProductoBodegaForm()
 
     return render(request, 'Bodegas/retirar_producto_bodega.html', {'form': form})
+
+
+
+
 
 
 
