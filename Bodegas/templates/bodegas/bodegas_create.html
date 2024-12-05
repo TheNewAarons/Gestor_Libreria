@@ -12,11 +12,21 @@
                     <div class="col-md-6">
                         <label for="id_nombre">Nombre de la Bodega:</label>
                         {{ form.nombre }}
+                        {% if form.nombre.errors %}
+                            <div class="text-danger">
+                                {{ form.nombre.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                     <!-- Dirección -->
                     <div class="col-md-6">
                         <label for="id_direction">Dirección:</label>
                         {{ form.direction }}
+                        {% if form.direction.errors %}
+                            <div class="text-danger">
+                                {{ form.direction.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -35,12 +45,18 @@
                     <!-- Tamaño -->
                     <div class="col-md-6">
                         <label for="id_tamaño_bodega">Tamaño de la Bodega:</label>
-                        {{ form.tamaño_bodega }}
+                        <div class="input-group">
+                            {{ form.tamaño_bodega }}
+                            <span class="input-group-text">m²</span>
+                        </div>
                     </div>
                     <!-- Capacidad -->
                     <div class="col-md-6">
                         <label for="id_capacidad">Capacidad:</label>
-                        {{ form.capacidad }}
+                        <div class="input-group">
+                            {{ form.capacidad }}
+                            <span class="input-group-text">unidades</span>
+                        </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-4">

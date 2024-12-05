@@ -10,5 +10,8 @@ urlpatterns = [
     path('bodegas_detail/<int:pk>/', BodegasDetailView.as_view(), name='bodegas_detail'),
     path('bodegas_update/<int:pk>/', BodegasUpdateView.as_view(), name='bodegas_update'),
     path('agregar_producto/', views.agregar_producto_bodega, name='agregar_producto_bodega'),
-    path('retirar_producto/', views.retirar_producto_bodega, name='retirar_producto_bodega'),
+    path('retirar-producto/', views.retirar_producto_bodega, name='retirar_producto_bodega'),
+    path('retirar-producto/<int:bodega_id>/', views.retirar_producto_bodega, name='retirar_producto_bodega_detail'),
+    path('mover-producto/', views.mover_producto, name='mover_producto'),
+    path('get-productos-bodega/', views.get_productos_bodega, name='get_productos_bodega'),
 ]

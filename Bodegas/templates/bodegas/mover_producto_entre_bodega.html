@@ -1,0 +1,87 @@
+{% extends 'Libreria/Base_modulos.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Mover Producto entre Bodegas</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <!-- Selector de Bodega Origen -->
+            <form method="GET" class="mb-4">
+                <div class="form-group">
+                    <label for="bodega_origen" class="form-label">Seleccione Bodega Origen:</label>
+                    <!-- Selector de Bodega Origen -->
+                    <select name="bodega_origen" id="bodega_origen" class="form-control" onchange="this.form.submit()">
+                        <option value="">-- Seleccione una bodega --</option>
+                        {% for bodega in bodegas_origen %}
+                            <option value="{{ bodega.id }}" 
+                                {% if bodega_seleccionada and bodega_seleccionada.id == bodega.id %}selected{% endif %}>
+                                {{ bodega.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+
+            {% if productos %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="bodega_origen" value="{{ bodega_seleccionada.id }}">
+
+                    <div class="form-group">
+                        <label for="producto" class="form-label">Seleccione Producto:</label>
+                        <select name="producto" id="producto" class="form-control" required>
+                            <option value="">-- Seleccione un producto --</option>
+                            {% for producto in productos %}
+                                <option value="{{ producto.producto.id }}">
+                                    {{ producto.producto.title }} (Stock: {{ producto.cantidad }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bodega_destino" class="form-label">Seleccione Bodega Destino:</label>
+                        <select name="bodega_destino" id="bodega_destino" class="form-control" required>
+                            <option value="">-- Seleccione una bodega --</option>
+                            {% for bodega in bodegas_destino %}
+                                {% if not bodega_seleccionada or bodega.id != bodega_seleccionada.id %}
+                                    <option value="{{ bodega.id }}">
+                                        {{ bodega.nombre }} 
+                                        {% if bodega.estado == 'VA' %}(Vacía){% endif %}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cantidad" class="form-label">Cantidad a mover:</label>
+                        <input type="number" name="cantidad" class="form-control" min="1" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success mt-3">Mover Producto</button>
+                </form>
+            {% elif bodega_seleccionada %}
+                <div class="alert alert-info">
+                    No hay productos en esta bodega.
+                </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'bodegas_list' %}" class="btn btn-dark">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

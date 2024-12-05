@@ -1,14 +1,84 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-5">
     <h2 class="text-center mb-4">Retirar Producto de Bodega</h2>
-    
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Retirar</button>
-        <a class="btn btn-dark" href="{% url 'bodegas_list' %}">Volver</a>
-    </form>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <!-- Selector de Bodega -->
+            <form method="GET" class="mb-4">
+                <div class="form-group">
+                    <label for="bodega" class="form-label">Seleccione una Bodega:</label>
+                    <select name="bodega" id="bodega" class="form-control" onchange="this.form.submit()">
+                        <option value="">-- Seleccione una bodega --</option>
+                        {% for bodega in bodegas %}
+                            <option value="{{ bodega.id }}" 
+                                {% if bodega_seleccionada.id == bodega.id %}selected{% endif %}>
+                                {{ bodega.nombre }} - Stock: {{ bodega.nivel_stock }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+
+            {% if productos_bodega %}
+                <h4 class="mb-3">Productos en {{ bodega_seleccionada.nombre }}</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Stock Disponible</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for producto in productos_bodega %}
+                                <tr>
+                                    <td>{{ producto.producto.title }}</td>
+                                    <td>{{ producto.cantidad }}</td>
+                                    <td>
+                                        <form method="POST" class="d-inline">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="bodega" value="{{ bodega_seleccionada.id }}">
+                                            <input type="hidden" name="producto" value="{{ producto.id }}">
+                                            <div class="input-group">
+                                                <input type="number" name="cantidad" 
+                                                       class="form-control form-control-sm" 
+                                                       min="1" max="{{ producto.cantidad }}" 
+                                                       required placeholder="Cantidad">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-minus"></i> Retirar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% elif bodega_seleccionada %}
+                <div class="alert alert-info">
+                    No hay productos en esta bodega.
+                </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'bodegas_list' %}" class="btn btn-dark">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

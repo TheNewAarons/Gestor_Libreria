@@ -7,13 +7,45 @@ class BodegasForm(forms.ModelForm):
         model = Bodega
         fields = ('nombre', 'direction', 'tipo_de_contenido', 'estado', 'tamaño_bodega', 'capacidad')
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre de la bodega'}),
-            'direction': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Dirección de la bodega'}),
-            'tipo_de_contenido': forms.TextInput(attrs={'class': 'form-control'}),
-            'estado': forms.Select(attrs={'class': 'form-control'}),
-            'tamaño_bodega': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Tamaño de la bodega'}),
-            'capacidad': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Capacidad de la bodega'}),
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Nombre de la bodega'
+            }),
+            'direction': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Dirección de la bodega'
+            }),
+            'tipo_de_contenido': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tipo de contenido'
+            }),
+            'estado': forms.Select(attrs={
+                'class': 'form-select'
+            }),
+            'tamaño_bodega': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tamaño de la bodega'
+            }),
+            'capacidad': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Capacidad de la bodega'
+            })
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        nombre = cleaned_data.get('nombre')
+        direction = cleaned_data.get('direction')
+
+        # Validar que el nombre no exista
+        if Bodega.objects.filter(nombre=nombre).exists():
+            self.add_error('nombre', 'Ya existe una bodega con este nombre.')
+
+        # Validar que la dirección no exista
+        if Bodega.objects.filter(direction=direction).exists():
+            self.add_error('direction', 'Ya existe una bodega con esta dirección.')
+
+        return cleaned_data
 
 class ProductoBodegaForm(forms.ModelForm):
     class Meta:
@@ -49,15 +81,26 @@ class ProductoBodegaForm(forms.ModelForm):
 
 
 class RetirarProductoForm(forms.Form):
-    bodega = forms.ModelChoiceField(queryset=Bodega.objects.all(), required=True)
-    producto_bodega = forms.ModelChoiceField(queryset=ProductoBodega.objects.none(), required=True)
-    cantidad_retirar = forms.IntegerField(min_value=1, required=True)
+    bodega = forms.ModelChoiceField(
+        queryset=Bodega.objects.all(), 
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    producto_bodega = forms.ModelChoiceField(
+        queryset=ProductoBodega.objects.none(),
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    cantidad_retirar = forms.IntegerField(
+        min_value=1, 
+        required=True,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la cantidad a retirar'})
+    )
 
     def __init__(self, *args, **kwargs):
-        bodega_id = kwargs.pop('bodega_id', None)
+        bodega_id = kwargs.pop('bodega_id', None)  # Capturar la bodega específica si es pasada
         super().__init__(*args, **kwargs)
         if bodega_id:
-            # Filtramos los productos por la bodega seleccionada
             self.fields['producto_bodega'].queryset = ProductoBodega.objects.filter(bodega_id=bodega_id)
 
     def clean(self):
@@ -79,5 +122,5 @@ class RetirarProductoForm(forms.Form):
                     f'No hay suficiente stock del producto "{producto_bodega.producto.title}". '
                     f'Stock disponible: {producto_bodega.producto.cantidad}.'
                 )
-
         return cleaned_data
+

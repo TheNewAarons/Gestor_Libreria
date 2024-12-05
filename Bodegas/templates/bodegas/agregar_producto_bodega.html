@@ -1,16 +1,67 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Agregar Producto a Bodega</h2>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
-<div class="container">
-    <h2 class="text-center mb-4 font-family: 'Lora', serif;">Agregar Producto a Bodega</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Agregar</button>
-        <a class="btn btn-dark" href="{% url 'bodegas_list' %}">Volver</a>
-    </form>
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <!-- Producto -->
+                    <div class="col-md-6">
+                        <label for="id_producto">Producto:</label>
+                        {{ form.producto }}
+                        {% if form.producto.errors %}
+                            <div class="text-danger">
+                                {{ form.producto.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Bodega -->
+                    <div class="col-md-6">
+                        <label for="id_bodega">Bodega:</label>
+                        {{ form.bodega }}
+                        {% if form.bodega.errors %}
+                            <div class="text-danger">
+                                {{ form.bodega.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <!-- Cantidad -->
+                    <div class="col-md-6">
+                        <label for="id_cantidad">Cantidad:</label>
+                        {{ form.cantidad }}
+                        {% if form.cantidad.errors %}
+                            <div class="text-danger">
+                                {{ form.cantidad.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+                    <a class="btn btn-dark" href="{% url 'bodegas_list' %}">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
-
 {% endblock %}
