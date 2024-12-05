@@ -10,7 +10,6 @@ from django.urls import reverse_lazy
 from django.db.models import Sum
 
 # Create your views here.
-
 def bodegas_list(request):
     search_query = request.GET.get('search', '')  # Capturamos el parámetro 'search'
     if search_query:
@@ -19,10 +18,6 @@ def bodegas_list(request):
         bodegas = Bodega.objects.all()  # Muestra todas las bodegas si no hay búsqueda
 
     return render(request, 'Bodegas/bodegas_list.html', {'bodegas': bodegas})
-
-
-
-
 
 def actualizar_estado_bodega(bodega):
     """
@@ -35,10 +30,6 @@ def actualizar_estado_bodega(bodega):
     else:
         bodega.estado = 'OC'  # Bodega ocupada
     bodega.save()
-
-
-
-
 
 def agregar_producto_bodega(request):
     if request.method == 'POST':
@@ -73,15 +64,6 @@ def agregar_producto_bodega(request):
         form = ProductoBodegaForm()
 
     return render(request, 'Bodegas/agregar_producto_bodega.html', {'form': form})
-
-
-
-
-
-
-
-
-
 
 def retirar_producto_bodega(request):
     # Obtener todas las bodegas con estado 'OC'
@@ -139,9 +121,6 @@ def retirar_producto_bodega(request):
             messages.error(request, f'Error al retirar producto: {str(e)}')
 
     return render(request, 'bodegas/retirar_producto_bodega.html', context)
-
-
-
 
 def mover_producto(request):
     # Obtener bodegas que tienen productos con cantidad mayor a 0
@@ -276,11 +255,6 @@ def get_productos_bodega(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-
-
-
-
-
 class BodegasListView(ListView):
     model = Bodega
     template_name = 'Bodegas/bodegas_list.html'
@@ -314,4 +288,3 @@ class BodegasDetailView(DetailView):
     model = Bodega
     template_name = 'Bodegas/bodegas_detail.html'
     context_object_name = 'bodega'
-

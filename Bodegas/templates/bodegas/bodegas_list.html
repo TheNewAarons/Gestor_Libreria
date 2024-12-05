@@ -3,26 +3,26 @@
 {% block content %}
 
 <div class="container mt-4">
-    <!-- Cards de acceso rápido compactas con iconos a la izquierda -->
+    <!-- Cards de acceso rápido en una fila con 4 columnas -->
     <div class="row mb-4">
-        <div class="col-sm-4 mb-3">
-            {% if request.user.rol == 'Jefe de Bodega' %}
-            <a href="{% url 'bodegas_create' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center">
+        <!-- Card 1: Crear Bodega (Solo para Jefe de Bodega) -->
+        {% if request.user.rol == 'Jefe de Bodega' %}
+        <div class="col-sm-3 mb-3">
+            <a href="{% url 'bodegas_create' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center text-decoration-none">
                 <div class="me-3 text-primary fs-3">
                     <i class="bi bi-shop-window"></i>
                 </div>
                 <div>
-                    
                     <h6 class="card-title mb-1">Crear Bodega</h6>
                     <p class="text-muted small mb-0">Formulario para crear una bodega</p>
-                    
                 </div>
-                
             </a>
-            {% endif %}
         </div>
-        <div class="col-sm-4 mb-3">
-            <a href="{% url 'agregar_producto_bodega' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center">
+        {% endif %}
+
+        <!-- Card 2: Agregar Productos -->
+        <div class="col-sm-3 mb-3">
+            <a href="{% url 'agregar_producto_bodega' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center text-decoration-none">
                 <div class="me-3 text-success fs-3">
                     <i class="bi bi-arrow-right-circle"></i>
                 </div>
@@ -32,8 +32,10 @@
                 </div>
             </a>
         </div>
-        <div class="col-sm-4 mb-3">
-            <a href="{% url 'retirar_producto_bodega' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center">
+
+        <!-- Card 3: Retirar Productos -->
+        <div class="col-sm-3 mb-3">
+            <a href="{% url 'retirar_producto_bodega' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center text-decoration-none">
                 <div class="me-3 text-danger fs-3">
                     <i class="bi bi-arrow-left-circle"></i>
                 </div>
@@ -43,19 +45,20 @@
                 </div>
             </a>
         </div>
-        <div class="col-sm-4 mb-3"></div>
-            <a href="{% url 'mover_producto' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center">
-                <div class="me-3 text-danger fs-3">
+
+        <!-- Card 4: Mover Productos -->
+        <div class="col-sm-3 mb-3">
+            <a href="{% url 'mover_producto' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center text-decoration-none">
+                <div class="me-3 text-warning fs-3">
                     <i class="bi bi-arrow-down-up"></i>
                 </div>
                 <div>
-                    <h6 class="card-title mb-1">Mover Productos entre Bodegas</h6>
+                    <h6 class="card-title mb-1">Mover Productos</h6>
                     <p class="text-muted small mb-0">Formulario para mover productos entre bodegas</p>
                 </div>
             </a>
         </div>
     </div>
-
 
     <!-- Tabla de bodegas -->
     <div class="table-responsive shadow-sm">
@@ -120,7 +123,9 @@
 
     <!-- Botón de regreso -->
     <div class="text-center mt-4">
-        <a class="btn btn-dark" href="{% url 'base' %}"><i class="bi bi-arrow-left-circle"></i> Volver</a>
+        <a class="btn btn-dark" href="{% url 'base' %}">
+            <i class="bi bi-arrow-left-circle"></i> Volver
+        </a>
     </div>
 </div>
 
