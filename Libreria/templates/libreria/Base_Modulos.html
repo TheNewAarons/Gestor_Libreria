@@ -39,11 +39,15 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
                         <li><a class="dropdown-item" href="{% url 'bodegas_create' %}">Agregar Bodega</a></li>
+                        <li><a class="dropdown-item" href="{% url 'eliminar_bodegas' %}">Eliminar Bodegas</a></li>
                         <li><a class="dropdown-item" href="{% url 'bodegas_list' %}">Listar Bodegas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'bodegas_detail_list' %}">Detalles de Bodega</a></li>
+                        {% if request.user.rol == 'Jefe de Bodega' %}
+                        <li><a class="dropdown-item" href="{% url 'editar_bodegas_list' %}">Editar Bodegas</a></li>
+                        {% endif %}
                         <li><a class="dropdown-item" href="{% url 'agregar_producto_bodega' %}">Agregar Producto a Bodega</a></li>
                         <li><a class="dropdown-item" href="{% url 'retirar_producto_bodega' %}">Quitar Producto de Bodega</a></li>
                         <li><a class="dropdown-item" href="{% url 'mover_producto' %}">Mover Producto entre Bodegas</a></li>
-                        <li><a class="dropdown-item" href="#">Listar Productos en Bodega</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

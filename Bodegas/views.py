@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -288,3 +288,61 @@ class BodegasDetailView(DetailView):
     model = Bodega
     template_name = 'Bodegas/bodegas_detail.html'
     context_object_name = 'bodega'
+
+def eliminar_bodegas_view(request):
+    # Filtrar bodegas que están vacías y no están ocupadas
+    bodegas_para_eliminar = Bodega.objects.filter(estado='VA', nivel_stock=0)
+
+    if request.method == 'POST':
+        bodega_id = request.POST.get('bodega_id')
+        bodega = get_object_or_404(Bodega, id=bodega_id, estado='VA', nivel_stock=0)
+        bodega.delete()
+        messages.success(request, 'Bodega eliminada exitosamente')
+        return redirect('eliminar_bodegas')
+
+    return render(request, 'bodegas/eliminar_bodegas.html', {'bodegas': bodegas_para_eliminar})
+
+def bodegas_detail_list(request):
+    bodegas = Bodega.objects.all()
+    detalles_bodegas = []
+    
+    for bodega in bodegas:
+        productos = ProductoBodega.objects.filter(bodega=bodega, cantidad__gt=0)
+        detalles_bodegas.append({
+            'bodega': bodega,
+            'productos': productos,
+            'total_productos': sum(p.cantidad for p in productos)
+        })
+    
+    return render(request, 'bodegas/bodegas_detail_list.html', {
+        'detalles_bodegas': detalles_bodegas
+    })
+
+def editar_bodegas_list(request):
+    bodegas = Bodega.objects.all()
+    return render(request, 'bodegas/editar_bodegas_list.html', {'bodegas': bodegas})
+
+def editar_bodega(request, pk):
+    bodega = get_object_or_404(Bodega, pk=pk)
+    
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        direccion = request.POST.get('direccion')
+        
+        # Verificar si el nombre o dirección ya existen en otras bodegas
+        if Bodega.objects.exclude(pk=pk).filter(nombre=nombre).exists():
+            messages.error(request, 'Ya existe una bodega con este nombre')
+            return redirect('editar_bodega', pk=pk)
+            
+        if Bodega.objects.exclude(pk=pk).filter(direccion=direccion).exists():
+            messages.error(request, 'Ya existe una bodega con esta dirección')
+            return redirect('editar_bodega', pk=pk)
+            
+        bodega.nombre = nombre
+        bodega.direccion = direccion
+        bodega.save()
+        
+        messages.success(request, 'Bodega actualizada exitosamente')
+        return redirect('editar_bodegas_list')
+        
+    return render(request, 'bodegas/editar_bodega.html', {'bodega': bodega})

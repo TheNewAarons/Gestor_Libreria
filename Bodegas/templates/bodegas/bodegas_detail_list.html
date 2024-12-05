@@ -1,0 +1,57 @@
+{% extends 'Libreria/Base_modulos.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Detalles de Bodegas</h2>
+
+    {% for detalle in detalles_bodegas %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <h5 class="card-title mb-0">
+                {{ detalle.bodega.nombre }}
+                <span class="badge {% if detalle.bodega.estado == 'OC' %}bg-success{% elif detalle.bodega.estado == 'VA' %}bg-warning{% else %}bg-danger{% endif %} ms-2">
+                    {{ detalle.bodega.get_estado_display }}
+                </span>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Dirección:</strong> {{ detalle.bodega.direccion }}</p>
+                    <p><strong>Total Productos:</strong> {{ detalle.total_productos }}</p>
+                </div>
+            </div>
+
+            {% if detalle.productos %}
+            <div class="table-responsive mt-3">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in detalle.productos %}
+                        <tr>
+                            <td>{{ producto.producto.title }}</td>
+                            <td>{{ producto.cantidad }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted">No hay productos en esta bodega</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="text-center mt-4">
+        <a class="btn btn-dark" href="{% url 'bodegas_list' %}">
+            <i class="bi bi-arrow-left-circle"></i> Volver
+        </a>
+    </div>
+</div>
+{% endblock %}

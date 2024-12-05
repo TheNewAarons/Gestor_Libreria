@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container mt-4">
-    <!-- Cards de acceso rápido en una fila con 4 columnas -->
+    <!-- Cards de acceso rápido -->
     <div class="row mb-4">
         <!-- Card 1: Crear Bodega (Solo para Jefe de Bodega) -->
         {% if request.user.rol == 'Jefe de Bodega' %}
@@ -15,6 +15,19 @@
                 <div>
                     <h6 class="card-title mb-1">Crear Bodega</h6>
                     <p class="text-muted small mb-0">Formulario para crear una bodega</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 5: Eliminar Bodegas (Solo para Jefe de Bodega) -->
+        <div class="col-sm-3 mb-3">
+            <a href="{% url 'eliminar_bodegas' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center text-decoration-none">
+                <div class="me-3 text-danger fs-3">
+                    <i class="bi bi-trash3"></i>
+                </div>
+                <div>
+                    <h6 class="card-title mb-1">Eliminar Bodegas</h6>
+                    <p class="text-muted small mb-0">Eliminar bodegas vacías</p>
                 </div>
             </a>
         </div>
@@ -58,6 +71,34 @@
                 </div>
             </a>
         </div>
+        <!-- Card 6: Detalles de Bodegas -->
+        <div class="col-sm-3 mb-3">
+            <a href="{% url 'bodegas_detail_list' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center text-decoration-none">
+                <div class="me-3 text-info fs-3">
+                    <i class="bi bi-info-circle"></i>
+                </div>
+                <div>
+                    <h6 class="card-title mb-1">Detalles de Bodegas</h6>
+                    <p class="text-muted small mb-0">Ver información de bodegas</p>
+                </div>
+            </a>
+        </div>
+        {% if request.user.rol == 'Jefe de Bodega' %}
+            <!-- ... otras cards del Jefe de Bodega ... -->
+            
+            <!-- Card: Editar Bodegas -->
+            <div class="col-sm-3 mb-3">
+                <a href="{% url 'editar_bodegas_list' %}" class="card shadow-sm p-2 h-100 d-flex align-items-center text-decoration-none">
+                    <div class="me-3 text-primary fs-3">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                    <div>
+                        <h6 class="card-title mb-1">Editar Bodegas</h6>
+                        <p class="text-muted small mb-0">Modificar datos de bodegas</p>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
     </div>
 
     <!-- Tabla de bodegas -->
@@ -123,9 +164,7 @@
 
     <!-- Botón de regreso -->
     <div class="text-center mt-4">
-        <a class="btn btn-dark" href="{% url 'base' %}">
-            <i class="bi bi-arrow-left-circle"></i> Volver
-        </a>
+        <a class="btn btn-dark" href="{% url 'base' %}"><i class="bi bi-arrow-left-circle"></i> Volver</a>
     </div>
 </div>
 
