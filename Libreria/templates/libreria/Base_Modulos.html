@@ -38,18 +38,19 @@
                         <i class="bi bi-building"></i> Gestión de Bodegas
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                        {% if request.user.rol == 'Jefe de Bodega' %}
                         <li><a class="dropdown-item" href="{% url 'bodegas_create' %}">Agregar Bodega</a></li>
                         <li><a class="dropdown-item" href="{% url 'eliminar_bodegas' %}">Eliminar Bodegas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'editar_bodegas_list' %}">Editar Bodegas</a></li>  
+                        {% endif %}
                         <li><a class="dropdown-item" href="{% url 'bodegas_list' %}">Listar Bodegas</a></li>
                         <li><a class="dropdown-item" href="{% url 'bodegas_detail_list' %}">Detalles de Bodega</a></li>
-                        {% if request.user.rol == 'Jefe de Bodega' %}
-                        <li><a class="dropdown-item" href="{% url 'editar_bodegas_list' %}">Editar Bodegas</a></li>
-                        {% endif %}
                         <li><a class="dropdown-item" href="{% url 'agregar_producto_bodega' %}">Agregar Producto a Bodega</a></li>
                         <li><a class="dropdown-item" href="{% url 'retirar_producto_bodega' %}">Quitar Producto de Bodega</a></li>
                         <li><a class="dropdown-item" href="{% url 'mover_producto' %}">Mover Producto entre Bodegas</a></li>
                     </ul>
                 </li>
+                {% if request.user.rol == 'Jefe de Bodega' %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-people"></i> Gestión de Usuarios
@@ -77,6 +78,7 @@
                         <li><a class="dropdown-item" href="{% url 'list' %}">Listar Productos</a></li>
                     </ul>
                 </li>
+                {% endif %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-file-earmark-text"></i> Generador de Informes
@@ -93,10 +95,7 @@
                         <i class="bi bi-plus-circle"></i> Insertar Productos
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink5">
-                        <li><a class="dropdown-item" href="#">Agregar Libro</a></li>
-                        <li><a class="dropdown-item" href="#">Agregar Revista</a></li>
-                        <li><a class="dropdown-item" href="#">Agregar Material Educativo</a></li>
-                        <li><a class="dropdown-item" href="#">Importar Productos</a></li>
+                        <li><a class="dropdown-item" href="#">Importar Productos Desde Excel</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -140,6 +139,7 @@
     {% block content %}
 
     <div class="row">
+        {% if request.user.rol == 'Jefe de Bodega' %}
         <!-- Módulo 1 -->
         <div class="col-md-4 mb-4">
             <a href="{% url 'list' %}" class="module-card">
@@ -150,7 +150,7 @@
                 </div>
             </a>
         </div>
-
+        {% endif %}
         <!-- Módulo 2 -->
         <div class="col-md-4 mb-4">
             <a href="{% url 'bodegas_list' %}" class="module-card">
@@ -161,7 +161,7 @@
                 </div>
             </a>
         </div>
-
+        {% if request.user.rol == 'Jefe de Bodega' %}
         <!-- Módulo 3 -->
         <div class="col-md-4 mb-4">
             <a href="{% url 'editorialList' %}" class="module-card">
@@ -183,7 +183,7 @@
                 </div>
             </a>
         </div>
-
+        {% endif %}
         <!-- Módulo 5 -->
         <div class="col-md-4 mb-4">
             <a href="{% url 'importar_productos' %}" class="module-card">
