@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
@@ -10,6 +11,15 @@ from django.urls import reverse_lazy
 from django.db.models import Sum
 
 # Create your views here.
+class RolRequeridoMixin(UserPassesTestMixin):
+    rol_requerido = 'Jefe de Bodega'
+
+    def test_func(self):
+        return self.request.user.rol == self.rol_requerido
+
+    def handle_no_permission(self):
+        return redirect('no_autorizado')
+
 def bodegas_list(request):
     search_query = request.GET.get('search', '')  # Capturamos el parámetro 'search'
     if search_query:
@@ -346,3 +356,26 @@ def editar_bodega(request, pk):
         return redirect('editar_bodegas_list')
         
     return render(request, 'bodegas/editar_bodega.html', {'bodega': bodega})
+
+class BodegaEstadoListView(RolRequeridoMixin, ListView):
+    model = Bodega
+    template_name = 'bodegas/bodega_estado_list.html'
+    context_object_name = 'bodegas'
+    rol_requerido = 'Jefe de Bodega'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for bodega in context['bodegas']:
+            bodega.productos_count = bodega.productos.count()
+        return context
+
+class BodegaEstadoUpdateView(RolRequeridoMixin, UpdateView):
+    model = Bodega
+    template_name = 'bodegas/bodega_estado_update.html'
+    fields = ['estado']
+    success_url = reverse_lazy('bodega_estado_list')
+    rol_requerido = 'Jefe de Bodega'
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Estado de bodega actualizado exitosamente.')
+        return super().form_valid(form)

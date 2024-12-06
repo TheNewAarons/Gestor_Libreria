@@ -1,0 +1,57 @@
+{% extends "Libreria/Base_Modulos.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="mb-0">
+                <i class="bi bi-pencil-square me-2"></i>Editar Editoriales
+            </h3>
+        </div>
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for editorial in editoriales %}
+                        <tr>
+                            <td>{{ editorial.id }}</td>
+                            <td>{{ editorial.name }}</td>
+                            <td>{{ editorial.address }}</td>
+                            <td>{{ editorial.phone }}</td>
+                            <td>
+                                <a href="{% url 'editorialUpdate' editorial.id %}" class="btn btn-warning btn-sm">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No hay editoriales disponibles</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer bg-light">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'editorialList' %}" class="btn btn-dark">
+                    <i class="bi bi-arrow-left-circle"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} 

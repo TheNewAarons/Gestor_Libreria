@@ -6,6 +6,10 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from Libros.forms import LibroForm
 from Libros.models import Libro
 from django.urls import reverse_lazy
+from django.contrib import messages
+from django.db.models import Sum
+from Bodegas.models import ProductoBodega
+
 # Create your views here.
 class RolRequeridoMixin(UserPassesTestMixin):
     rol_requerido = 'Jefe de Bodega' 
@@ -54,3 +58,57 @@ class LibroDetailView(RolRequeridoMixin,DetailView):
     template_name = 'libros/libros_detail.html'
     context_object_name = 'libro'
     rol_requerido = 'Jefe de Bodega'
+
+class LibroDeleteListView(RolRequeridoMixin, ListView):
+    model = Libro
+    template_name = 'libros/libros_delete_list.html'
+    context_object_name = 'libros'
+    rol_requerido = 'Jefe de Bodega'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Obtener el stock de cada libro
+        for libro in context['libros']:
+            stock_total = ProductoBodega.objects.filter(
+                producto=libro
+            ).aggregate(
+                total=Sum('cantidad')
+            )['total'] or 0
+            libro.stock_total = stock_total
+        return context
+    
+class LibroDetailListView(RolRequeridoMixin, ListView):
+    model = Libro
+    template_name = 'libros/libros_detail_list.html'
+    context_object_name = 'libros'
+    rol_requerido = 'Jefe de Bodega'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Obtener el stock de cada libro
+        for libro in context['libros']:
+            stock_total = ProductoBodega.objects.filter(
+                producto=libro
+            ).aggregate(
+                total=Sum('cantidad')
+            )['total'] or 0
+            libro.stock_total = stock_total
+        return context
+    
+class LibroEditListView(RolRequeridoMixin, ListView):
+    model = Libro
+    template_name = 'libros/libros_edit_list.html'
+    context_object_name = 'libros'
+    rol_requerido = 'Jefe de Bodega'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Obtener el stock de cada libro
+        for libro in context['libros']:
+            stock_total = ProductoBodega.objects.filter(
+                producto=libro
+            ).aggregate(
+                total=Sum('cantidad')
+            )['total'] or 0
+            libro.stock_total = stock_total
+        return context

@@ -1,0 +1,55 @@
+{% extends "Libreria/Base_Modulos.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Confirmar Eliminación
+                    </h3>
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="text-center mb-4">¿Está seguro de eliminar la editorial "{{ editorial.name }}"?</h5>
+                    
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="bg-light">ID:</th>
+                                <td>{{ editorial.id }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Nombre:</th>
+                                <td>{{ editorial.name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Dirección:</th>
+                                <td>{{ editorial.address }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Teléfono:</th>
+                                <td>{{ editorial.phone }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="{% url 'editorial_delete_list' %}" class="btn btn-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-2"></i>Confirmar Eliminación
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} 

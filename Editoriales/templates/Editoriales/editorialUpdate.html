@@ -3,14 +3,101 @@
 
 {% block content %}
 
-    <div class="container">
-        <h2>Editar Editorial</h2>
-        <form method='post'>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type='submit' class='btn btn-success'>Editar Editorial</button>
-            <a href="{% url 'editorialList' %}" class='btn btn-dark'>Volver</a>
-        </form>
-    </div>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h3 class="mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>Editar Editorial
+                    </h3>
+                </div>
 
-{% endblock  %}
+                <div class="card-body">
+                    <form method="post" class="row g-3">
+                        {% csrf_token %}
+
+                        <!-- Información de la Editorial -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.name.id_for_label }}" class="form-label">
+                                    <i class="bi bi-building me-2"></i>Nombre de la Editorial
+                                </label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ form.name.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.phone.id_for_label }}" class="form-label">
+                                    <i class="bi bi-telephone me-2"></i>Teléfono
+                                </label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ form.phone.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="{{ form.address.id_for_label }}" class="form-label">
+                                    <i class="bi bi-geo-alt me-2"></i>Dirección
+                                </label>
+                                {{ form.address }}
+                                {% if form.address.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ form.address.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Información Actual -->
+                        <div class="col-12">
+                            <div class="card bg-light mb-3">
+                                <div class="card-header">
+                                    <i class="bi bi-info-circle me-2"></i>Información Actual
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="mb-1"><strong>Nombre:</strong> {{ editorial.name }}</p>
+                                            <p class="mb-1"><strong>Teléfono:</strong> {{ editorial.phone }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-1"><strong>Dirección:</strong> {{ editorial.address }}</p>
+                                            <p class="mb-1"><strong>ID:</strong> {{ editorial.id }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="col-12">
+                            <hr>
+                            <div class="d-flex justify-content-end gap-2">
+                                <a href="{% url 'editorial_edit_list' %}" class="btn btn-secondary">
+                                    <i class="bi bi-x-circle me-2"></i>Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="bi bi-check-circle me-2"></i>Actualizar Editorial
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

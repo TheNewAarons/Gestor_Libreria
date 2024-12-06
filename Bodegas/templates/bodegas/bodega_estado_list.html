@@ -1,0 +1,86 @@
+{% extends "Libreria/Base_Modulos.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    {% if messages %}
+    <div class="row">
+        <div class="col-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h3 class="mb-0">
+                <i class="bi bi-toggles me-2"></i>Gestión de Estados de Bodegas
+            </h3>
+        </div>
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Estado Actual</th>
+                            <th>Productos</th>
+                            <th>Tipo de Contenido</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bodega in bodegas %}
+                        <tr>
+                            <td>{{ bodega.id }}</td>
+                            <td>{{ bodega.nombre }}</td>
+                            <td>
+                                <span class="badge 
+                                    {% if bodega.estado == 'VA' %}bg-secondary
+                                    {% elif bodega.estado == 'OC' %}bg-success
+                                    {% elif bodega.estado == 'MT' %}bg-warning
+                                    {% endif %}">
+                                    {{ bodega.get_estado_display }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if bodega.productos_count > 0 %}
+                                    <span class="badge bg-primary">{{ bodega.productos_count }} productos</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Sin productos</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ bodega.tipo_de_contenido }}</td>
+                            <td>
+                                <a href="{% url 'bodega_estado_update' bodega.id %}" class="btn btn-info btn-sm">
+                                    <i class="bi bi-toggle-on me-1"></i>Cambiar Estado
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">No hay bodegas disponibles</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer bg-light">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'bodegas_list' %}" class="btn btn-dark">
+                    <i class="bi bi-arrow-left-circle"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} 

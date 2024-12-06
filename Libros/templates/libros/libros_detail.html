@@ -1,79 +1,142 @@
 {% extends 'Libreria/Base_modulos.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    {% if libro %}
-    <h2 class="text-center mb-5">Detalles de {{ libro.tipo }}</h2>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card shadow border-0 p-4">
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">Detalles del Producto</h3>
+                </div>
+                
                 <div class="card-body">
-                    
-                    <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Nombre</h5>
-                        <p class="fs-5 text-dark">{{ libro.title }}</p>
-                        <hr>
+                    <div class="row">
+                        <!-- Columna de la imagen -->
+                        <div class="col-md-4">
+                            <div class="position-relative">
+                                {% if libro.portada %}
+                                    <img src="{{ libro.portada.url }}" class="img-fluid rounded shadow-sm" alt="{{ libro.title }}">
+                                {% else %}
+                                    <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 300px;">
+                                        <i class="bi bi-book fs-1 text-muted"></i>
+                                    </div>
+                                {% endif %}
+                                
+                                <!-- Badge de estado de stock -->
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    {% if libro.stock_total > 10 %}
+                                        <span class="badge bg-success">Stock Alto</span>
+                                    {% elif libro.stock_total > 0 %}
+                                        <span class="badge bg-warning">Stock Bajo</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Sin Stock</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Columna de información -->
+                        <div class="col-md-8">
+                            <div class="mb-4">
+                                <h2 class="text-primary mb-1">{{ libro.title }}</h2>
+                                <p class="text-muted mb-2">
+                                    <i class="bi bi-person-circle me-2"></i>{{ libro.author }}
+                                </p>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <h5 class="text-secondary">
+                                            <i class="bi bi-building me-2"></i>Editorial
+                                        </h5>
+                                        <p>{{ libro.editorial }}</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h5 class="text-secondary">
+                                            <i class="bi bi-tag me-2"></i>Tipo
+                                        </h5>
+                                        <p>{{ libro.tipo }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <h5 class="text-secondary">
+                                            <i class="bi bi-rulers me-2"></i>Tamaño
+                                        </h5>
+                                        <p>{{ libro.tamaño }}</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h5 class="text-secondary">
+                                            <i class="bi bi-box-seam me-2"></i>Stock Total
+                                        </h5>
+                                        <p>{{ libro.stock_total|default:"0" }} unidades</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h5 class="text-secondary">
+                                    <i class="bi bi-card-text me-2"></i>Descripción
+                                </h5>
+                                <p class="text-justify">{{ libro.description }}</p>
+                            </div>
+
+                            <!-- Información de Bodegas -->
+                            <div class="mb-4">
+                                <h5 class="text-secondary">
+                                    <i class="bi bi-shop me-2"></i>Distribución en Bodegas
+                                </h5>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Bodega</th>
+                                                <th>Cantidad</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for stock in libro.productobodega_set.all %}
+                                            <tr>
+                                                <td>{{ stock.bodega.nombre }}</td>
+                                                <td>{{ stock.cantidad }}</td>
+                                                <td>
+                                                    <span class="badge {% if stock.bodega.estado == 'OC' %}bg-success{% elif stock.bodega.estado == 'VA' %}bg-warning{% else %}bg-danger{% endif %}">
+                                                        {{ stock.bodega.get_estado_display }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="3" class="text-center">No hay stock en ninguna bodega</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Descripción</h5>
-                        <p class="fs-5 text-dark">{{ libro.description }}</p>
-                        <hr>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Autor</h5>
-                        <p class="fs-5 text-dark">{{ libro.author }}</p>
-                        <hr>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Editorial</h5>
-                        <p class="fs-5 text-dark">{{ libro.editorial }}</p>
-                        <hr>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Tipo</h5>
-                        <p class="fs-5 text-dark">{{ libro.tipo }}</p>
-                        <hr>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Tamaño</h5>
-                        <p class="fs-5 text-dark">{{ libro.tamaño }}</p>
-                        <hr>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Cantidad</h5>
-                        <p class="fs-5 text-dark">{{ libro.cantidad }}</p>
-                        <hr>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Fecha de Creación</h5>
-                        <p class="fs-5 text-dark">{{ libro.created_at }}</p>
-                        <hr>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Fecha de Actualización</h5>
-                        <p class="fs-5 text-dark">{{ libro.updated_at }}</p>
+                </div>
+
+                <div class="card-footer bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-muted">ID del Producto: {{ libro.id }}</small>
+                        </div>
+                        <div>
+                            <a href="{% url 'update' libro.id %}" class="btn btn-warning btn-sm me-2">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <a href="{% url 'list' %}" class="btn btn-dark btn-sm">
+                                <i class="bi bi-arrow-left-circle"></i> Volver
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-4 text-center">
-            <img src="{{ libro.portada.url }}" alt="Portada del libro" class="img-fluid rounded shadow-lg mb-3">
-            <a class="btn btn-dark" href="{% url 'list' %}">Volver</a>
-        </div>
     </div>
-    {% else %}
-    <h2 class="text-center text-danger">Libro no encontrado</h2>
-    {% endif %}
 </div>
-
-
 {% endblock %}

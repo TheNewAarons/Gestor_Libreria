@@ -1,0 +1,58 @@
+{% extends "Libreria/Base_Modulos.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-toggle-on me-2"></i>Cambiar Estado de Bodega
+                    </h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>Bodega: {{ bodega.nombre }}</h5>
+                        <p class="text-muted mb-0">Estado actual: 
+                            <span class="badge 
+                                {% if bodega.estado == 'VA' %}bg-secondary
+                                {% elif bodega.estado == 'OC' %}bg-success
+                                {% elif bodega.estado == 'MT' %}bg-warning
+                                {% endif %}">
+                                {{ bodega.get_estado_display }}
+                            </span>
+                        </p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-toggles me-2"></i>Nuevo Estado
+                            </label>
+                            {{ form.estado }}
+                            {% if form.estado.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.estado.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <hr>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'bodega_estado_list' %}" class="btn btn-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-info">
+                                <i class="bi bi-check-circle me-2"></i>Actualizar Estado
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} 

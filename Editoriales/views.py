@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from Editoriales.forms import EditorialForm
 from django.urls import reverse_lazy
 from Editoriales.models import Editorial
+from django.contrib import messages
+from Libros.models import Libro
 # Create your views here.
 class RolRequeridoMixin(UserPassesTestMixin):
     rol_requerido = 'Jefe de Bodega' 
@@ -44,3 +46,36 @@ class EditorialUpdateView(RolRequeridoMixin,UpdateView):
     template_name = 'Editoriales/editorialUpdate.html'
     success_url = reverse_lazy('editorialList')
     rol_requerido = 'Jefe de Bodega'
+
+class EditorialEditListView(RolRequeridoMixin, ListView):
+    model = Editorial
+    template_name = 'Editoriales/editorial_edit_list.html'
+    context_object_name = 'editoriales'
+    rol_requerido = 'Jefe de Bodega'
+
+class EditorialDeleteListView(RolRequeridoMixin, ListView):
+    model = Editorial
+    template_name = 'Editoriales/editorial_delete_list.html'
+    context_object_name = 'editoriales'
+    rol_requerido = 'Jefe de Bodega'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Añadir el conteo de productos a cada editorial
+        for editorial in context['editoriales']:
+            editorial.productos_count = Libro.objects.filter(editorial=editorial).count()
+        return context
+
+class EditorialDeleteView(RolRequeridoMixin, DeleteView):
+    model = Editorial
+    template_name = 'Editoriales/editorial_confirm_delete.html'  # Actualizado
+    success_url = reverse_lazy('editorial_delete_list')
+    rol_requerido = 'Jefe de Bodega'
+
+    def post(self, request, *args, **kwargs):
+        editorial = self.get_object()
+        if Libro.objects.filter(editorial=editorial).exists():
+            messages.error(request, 'No se puede eliminar la editorial porque tiene productos asociados.')
+            return redirect('editorial_delete_list')
+        messages.success(request, 'Editorial eliminada exitosamente.')
+        return super().post(request, *args, **kwargs)

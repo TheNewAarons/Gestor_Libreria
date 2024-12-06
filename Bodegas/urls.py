@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from GestorLibreria import settings
-from Bodegas.views import BodegasListView, BodegasCreateView, BodegasDeleteView, BodegasDetailView, BodegasUpdateView
+from Bodegas.views import BodegasListView, BodegasCreateView, BodegasDeleteView, BodegasDetailView, BodegasUpdateView, BodegaEstadoListView, BodegaEstadoUpdateView
 
 urlpatterns = [
     path('bodegas_list/', BodegasListView.as_view(), name='bodegas_list'),
@@ -18,4 +18,6 @@ urlpatterns = [
     path('bodegas_detail_list/', views.bodegas_detail_list, name='bodegas_detail_list'),
     path('editar-bodegas/', views.editar_bodegas_list, name='editar_bodegas_list'),
     path('editar-bodega/<int:pk>/', views.editar_bodega, name='editar_bodega'),
+    path('estado-list/', BodegaEstadoListView.as_view(), name='bodega_estado_list'),
+    path('estado-update/<int:pk>/', BodegaEstadoUpdateView.as_view(), name='bodega_estado_update'),
 ]

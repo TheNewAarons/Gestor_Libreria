@@ -44,6 +44,7 @@
                         <li><a class="dropdown-item" href="{% url 'editar_bodegas_list' %}">Editar Bodegas</a></li>  
                         {% endif %}
                         <li><a class="dropdown-item" href="{% url 'bodegas_list' %}">Listar Bodegas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'bodega_estado_list' %}">Cambiar Estados</a></li>
                         <li><a class="dropdown-item" href="{% url 'bodegas_detail_list' %}">Detalles de Bodega</a></li>
                         <li><a class="dropdown-item" href="{% url 'agregar_producto_bodega' %}">Agregar Producto a Bodega</a></li>
                         <li><a class="dropdown-item" href="{% url 'retirar_producto_bodega' %}">Quitar Producto de Bodega</a></li>
@@ -67,6 +68,8 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
                         <li><a class="dropdown-item" href="{% url 'editorialCreate' %}">Agregar Editorial</a></li>
                         <li><a class="dropdown-item" href="{% url 'editorialList' %}">Listar Editoriales</a></li>
+                        <li><a class="dropdown-item" href="{% url 'editorial_delete_list' %}">Eliminar Editoriales</a></li>
+                        <li><a class="dropdown-item" href="{% url 'editorial_edit_list' %}">Editar Editoriales</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -76,6 +79,10 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink6">
                         <li><a class="dropdown-item" href="{% url 'create' %}">Agregar Producto</a></li>
                         <li><a class="dropdown-item" href="{% url 'list' %}">Listar Productos</a></li>
+                        <li><a class="dropdown-item" href="{% url 'delete_list' %}">Eliminar Productos</a></li>
+                        <li><a class="dropdown-item" href="{% url 'detail_list' %}">Detalles de Productos</a></li>
+                        <li><a class="dropdown-item" href="{% url 'edit_list' %}">Editar Productos</a></li>
+                        <li><a class="dropdown-item" href="#">Productos en Revisión</a></li>
                     </ul>
                 </li>
                 {% endif %}
@@ -143,7 +150,7 @@
         <!-- Módulo 1 -->
         <div class="col-md-4 mb-4">
             <a href="{% url 'list' %}" class="module-card">
-                <div class="module-icon"><i class="bi bi-book"></i></div>
+                <div class="module-icon"><i class="bi bi-box-seam"></i></div>
                 <div class="module-text">
                     <h5>Gestion Productos</h5>
                     <p>Administra las bodegas y su inventario</p>
@@ -154,7 +161,7 @@
         <!-- Módulo 2 -->
         <div class="col-md-4 mb-4">
             <a href="{% url 'bodegas_list' %}" class="module-card">
-                <div class="module-icon"><i class="bi bi-box"></i></div>
+                <div class="module-icon"><i class="bi bi-building"></i></div>
                 <div class="module-text">
                     <h5>Gestion Bodegas</h5>
                     <p>Opciones para hacer Gestion de bodegas</p>
@@ -165,7 +172,7 @@
         <!-- Módulo 3 -->
         <div class="col-md-4 mb-4">
             <a href="{% url 'editorialList' %}" class="module-card">
-                <div class="module-icon"><i class="bi bi-journal-medical"></i></div>
+                <div class="module-icon"><i class="bi bi-book"></i></div>
                 <div class="module-text">
                     <h5>Gestion editoriales</h5>
                     <p>Opciones para hacer Gestion de editoriales</p>
@@ -187,7 +194,7 @@
         <!-- Módulo 5 -->
         <div class="col-md-4 mb-4">
             <a href="{% url 'importar_productos' %}" class="module-card">
-                <div class="module-icon"><i class="bi bi-arrow-up-circle"></i></div>
+                <div class="module-icon"><i class="bi bi-plus-circle"></i></div>
                 <div class="module-text">
                     <h5>Importar Productos</h5>
                     <p>Opciones para importar Productos</p>
@@ -198,7 +205,7 @@
         <!-- Módulo 6 -->
         <div class="col-md-4 mb-4">
             <a href="#" class="module-card">
-                <div class="module-icon"><i class="bi bi-file-earmark-arrow-down"></i></div>
+                <div class="module-icon"><i class="bi bi-file-earmark-text"></i></div>
                 <div class="module-text">
                     <h5>Generar Informes</h5>
                     <p>Opcion Para Hacer Gestion de Informes</p>
