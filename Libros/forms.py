@@ -14,7 +14,7 @@ class LibroForm(forms.ModelForm):
             'cantidad': forms.TextInput(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'portada': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'portada': forms.ClearableFileInput(attrs={'class': 'form-control','type' : 'file', 'id' : 'formFile'}),
         }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

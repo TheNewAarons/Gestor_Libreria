@@ -13,3 +13,8 @@ class UsersForm(UserCreationForm):
             'password2': forms.PasswordInput(attrs={'class': 'form-control w-100'}),
             'rol': forms.Select(attrs={'class': 'form-control'}),
         }
+    
+    
+            
+
+        

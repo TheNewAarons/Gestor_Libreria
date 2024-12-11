@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -9,6 +10,9 @@ from Bodegas.forms import BodegasForm, ProductoBodegaForm, RetirarProductoForm
 from Bodegas.models import Bodega, ProductoBodega
 from django.urls import reverse_lazy
 from django.db.models import Sum
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
+from io import BytesIO
 
 # Create your views here.
 class RolRequeridoMixin(UserPassesTestMixin):
@@ -123,7 +127,7 @@ def retirar_producto_bodega(request):
                 producto = producto_bodega.producto
                 producto.cantidad += cantidad
                 producto.save()
-
+                
                 messages.success(request, 'Producto retirado exitosamente')
                 return redirect('bodegas_list')
 
@@ -229,9 +233,39 @@ def mover_producto(request):
             
             bodega_origen.save()
             bodega_destino.save()
+            usuario = request.user
+            html_content = render_to_string('Bodegas/movimiento_pdf.html', {
+                'bodega_origen': bodega_origen,
+                'bodega_destino': bodega_destino,
+                'producto': ProductoBodega.objects.get(id=producto_id),
+                'cantidad': cantidad,
+                'username' : usuario.username,
+                'rol' : usuario.rol
+            })
+            #generacion de pdf con datos del movimiento
 
-            messages.success(request, 'Producto movido exitosamente')
-            return redirect('bodegas_list')
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = f'attchment; filename="movimiento_producto.pdf"'
+
+            pdf_buffer = BytesIO()
+            pisa_status = pisa.CreatePDF(html_content, dest=response)
+            
+            if pisa_status.err:
+                return HttpResponse("Error al generar el pdf", status=500)
+            pdf_buffer.seek(0)
+            messages.success(request, "Movimiento realizado exitosamente")
+            # Limpiar el formulario (pasar datos vacíos para que no se mantengan)
+            context = {
+                'bodegas_origen': bodegas_origen,
+                'bodegas_destino': bodegas_destino,
+                'productos': None,  # Limpiar productos
+                'bodega_seleccionada': None,  # Limpiar bodega seleccionada
+            }
+            
+            # Mostrar la misma vista sin redirigir, con mensaje de éxito
+            return response
+            return render(request, 'bodegas/mover_producto_entre_bodega.html', context)
+            
 
         except Exception as e:
             messages.error(request, f'Error: {str(e)}')
