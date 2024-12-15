@@ -21,3 +21,17 @@ class LibroForm(forms.ModelForm):
         # Filtrar usuarios con rol "autor"
         self.fields['author'].queryset = Users.objects.filter(rol='autor')  # Ajusta el nombre del campo del rol
 
+
+
+
+class LibroFormPublicar(forms.ModelForm):
+    class Meta:
+        model = Libro
+        fields = ['title', 'tipo', 'editorial', 'description', 'portada']  # Campos que se usarán
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe el título'}),
+            'tipo': forms.Select(attrs={'class': 'form-select'}),
+            'editorial': forms.Select(attrs={'class': 'form-select'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Escribe la descripción'}),
+            'portada': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }

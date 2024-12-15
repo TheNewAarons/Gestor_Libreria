@@ -3,7 +3,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import UserPassesTestMixin
-from Libros.forms import LibroForm
+from Libros.forms import LibroForm, LibroFormPublicar
 from Libros.models import Libro
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -112,3 +112,30 @@ class LibroEditListView(RolRequeridoMixin, ListView):
             )['total'] or 0
             libro.stock_total = stock_total
         return context
+    
+
+
+class PublicarLibroView(CreateView):
+    model = Libro
+    template_name = "libros/publicar_libro.html"  # Ajusta el nombre de la plantilla
+    form_class = LibroFormPublicar
+    success_url = reverse_lazy('home')  # Redirige después de la publicación
+
+    def form_valid(self, form):
+        # Asignar automáticamente el autor actual como el creador del libro
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+    def post(self, request):
+        form = LibroFormPublicar(request.POST, request.FILES)
+        if form.is_valid():
+            libro = form.save(commit=False)  # No guardar aún en la base de datos
+            if request.user.rol == 'Autor':  # Verifica si el usuario es autor
+                libro.estadoLibro = 'Revision'  # Establece el estado en revisión
+            else:
+                libro.estadoLibro = 'Publicado'  # Por defecto, publicado para otros roles
+            libro.author = request.user  # Asigna el autor al usuario actual
+            libro.save()  # Guarda el libro en la base de datos
+            return redirect('home')  # Redirige al home
+        return render(request, 'Libros/publicar_libro.html', {'form': form})
+        

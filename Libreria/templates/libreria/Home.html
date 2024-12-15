@@ -25,9 +25,15 @@
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <ul class="navbar-nav ml-auto">
                         {% if request.user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'base' %}">Modulos</a>
-                        </li>
+                            {% if request.user.rol == 'Autor' %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'publicar_libro' %}">Publicar</a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'base' %}">Módulos</a>
+                                </li>
+                            {% endif %}
                         {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="#sobre-nosotros">Sobre Nosotros</a>
