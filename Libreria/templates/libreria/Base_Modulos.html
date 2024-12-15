@@ -82,7 +82,7 @@
                         <li><a class="dropdown-item" href="{% url 'delete_list' %}">Eliminar Productos</a></li>
                         <li><a class="dropdown-item" href="{% url 'detail_list' %}">Detalles de Productos</a></li>
                         <li><a class="dropdown-item" href="{% url 'edit_list' %}">Editar Productos</a></li>
-                        <li><a class="dropdown-item" href="#">Productos en Revisión</a></li>
+                        <li><a class="dropdown-item" href="{% url 'libros_revision' %}">Productos en Revisión</a></li>
                     </ul>
                 </li>
                 {% endif %}
@@ -102,7 +102,7 @@
                         <i class="bi bi-plus-circle"></i> Insertar Productos
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink5">
-                        <li><a class="dropdown-item" href="#">Importar Productos Desde Excel</a></li>
+                        <li><a class="dropdown-item" href="{% url 'importar_productos' %}">Importar Productos Desde Excel</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
