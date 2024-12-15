@@ -77,6 +77,7 @@ class LibroDeleteListView(RolRequeridoMixin, ListView):
             libro.stock_total = stock_total
         return context
     
+    
 class LibroDetailListView(RolRequeridoMixin, ListView):
     model = Libro
     template_name = 'libros/libros_detail_list.html'
