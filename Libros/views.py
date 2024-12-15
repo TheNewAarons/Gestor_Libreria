@@ -139,3 +139,26 @@ class PublicarLibroView(CreateView):
             return redirect('home')  # Redirige al home
         return render(request, 'Libros/publicar_libro.html', {'form': form})
         
+
+
+class LibrosEnRevisionView(ListView):
+    def get(self, request):
+        # Obtener los libros con estado 'Revision' o 'Denegado'
+        libros = Libro.objects.filter(estadoLibro__in=['Revision', 'Denegado'])
+        return render(request, 'Libros/libros_revision.html', {'libros': libros})
+
+class CambiarEstadoLibroView(ListView):
+    def post(self, request, libro_id):
+        # Obtener el libro correspondiente
+        libro = Libro.objects.filter(id=libro_id).first()
+
+        if libro:
+            # Obtener el nuevo estado desde el formulario
+            nuevo_estado = request.POST.get('estadoLibro')
+
+            # Verificar que el estado sea válido
+            if nuevo_estado in ['Publicado', 'Denegado']:
+                libro.estadoLibro = nuevo_estado
+                libro.save()
+
+        return redirect('libros_revision')  # Redirige a la lista de libros en 
