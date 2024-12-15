@@ -8,6 +8,9 @@ from Editoriales.models import Editorial
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import ImportarProductosForm
 from django.contrib.auth.hashers import make_password
+import logging
+
+logger = logging.getLogger(__name__)
 
 def importar_productos(request):
     if request.method == 'POST':
@@ -15,7 +18,30 @@ def importar_productos(request):
         if form.is_valid():
             try:
                 excel_file = request.FILES['archivo']
-                df = pd.read_excel(excel_file)
+                
+                # Verificar la extensión del archivo
+                file_ext = os.path.splitext(excel_file.name)[1]
+                if file_ext not in ['.xlsx', '.xls']:
+                    messages.error(request, 'El archivo debe ser un Excel (.xlsx o .xls)')
+                    return render(request, 'ImportarProductos/importar.html', {'form': form})
+
+                try:
+                    df = pd.read_excel(excel_file)
+                except Exception as e:
+                    logger.error(f"Error al leer el archivo Excel: {str(e)}")
+                    messages.error(request, f'Error al leer el archivo Excel: {str(e)}')
+                    return render(request, 'ImportarProductos/importar.html', {'form': form})
+
+                if df.empty:
+                    messages.error(request, 'El archivo Excel está vacío')
+                    return render(request, 'ImportarProductos/importar.html', {'form': form})
+
+                # Verificar campos requeridos
+                required_fields = ['title', 'tipo', 'tamaño', 'editorial', 'username', 'description']
+                missing_fields = [field for field in required_fields if field not in df.columns]
+                if missing_fields:
+                    messages.error(request, f'Faltan las siguientes columnas requeridas: {", ".join(missing_fields)}')
+                    return render(request, 'ImportarProductos/importar.html', {'form': form})
 
                 exitosos = 0
                 fallidos = 0
@@ -23,13 +49,24 @@ def importar_productos(request):
                 autores_creados = 0
                 editoriales_creadas = 0
 
-                # Procesar cada fila del Excel
                 for index, row in df.iterrows():
                     try:
-                        # Validar campos requeridos
-                        required_fields = ['title', 'tipo', 'tamaño', 'editorial', 'username', 'description']
-                        if not all(field in row for field in required_fields):
-                            raise ValueError(f"Faltan campos requeridos en la fila {index + 2}")
+                        # Validar campos vacíos
+                        empty_fields = [field for field in required_fields if pd.isna(row[field])]
+                        if empty_fields:
+                            raise ValueError(f"Campos vacíos: {', '.join(empty_fields)}")
+
+                        # Validar el tipo de libro según las opciones permitidas
+                        if row['tipo'] not in ['Libro', 'Revista', 'Enciclopedias']:
+                            raise ValueError("El tipo debe ser 'Libro', 'Revista' o 'Enciclopedias'")
+
+                        # Validar que el tamaño sea un número positivo
+                        try:
+                            tamaño = int(row['tamaño'])
+                            if tamaño <= 0:
+                                raise ValueError
+                        except:
+                            raise ValueError("El tamaño debe ser un número positivo")
 
                         # Buscar o crear autor
                         try:
@@ -38,67 +75,58 @@ def importar_productos(request):
                                 author.rol = 'author'
                                 author.save()
                         except Users.DoesNotExist:
-                            # Crear nuevo autor
                             author = Users.objects.create(
                                 username=row['username'],
                                 email=f"{row['username']}@example.com",
                                 password=make_password('Temporal123'),
-                                first_name=row.get('first_name', ''),
-                                last_name=row.get('last_name', ''),
+                                first_name=str(row.get('first_name', '')),
+                                last_name=str(row.get('last_name', '')),
                                 rol='author'
                             )
                             autores_creados += 1
-                            messages.info(request, 
-                                f"Autor creado: {row['username']} (Contraseña: Temporal123)")
+                            messages.info(request, f"Autor creado: {row['username']}")
 
                         # Buscar o crear editorial
                         try:
                             editorial = Editorial.objects.get(name=row['editorial'])
                         except Editorial.DoesNotExist:
-                            # Crear nueva editorial
                             editorial = Editorial.objects.create(
-                                name=row['editorial'],
-                                description=row.get('editorial_description', f'Editorial {row["editorial"]}'),
-                                address=row.get('editorial_address', 'Dirección pendiente'),
-                                phone=row.get('editorial_phone', '000000000'),
-                                email=row.get('editorial_email', f'{row["editorial"].lower().replace(" ", "")}@example.com')
+                                name=str(row['editorial']),
+                                address=str(row.get('editorial_address', f'Dirección de {row["editorial"]}')),
+                                phone=int(row.get('editorial_phone', '900000000'))
                             )
                             editoriales_creadas += 1
                             messages.info(request, f"Editorial creada: {row['editorial']}")
 
-                        # Crear y guardar el libro
+                        # Crear libro
+                        cantidad = int(row.get('cantidad', 0))
                         libro = Libro.objects.create(
-                            title=row['title'],
-                            tipo=row['tipo'],
-                            tamaño=row['tamaño'],
+                            title=str(row['title']),
+                            tipo=str(row['tipo']),
+                            tamaño=int(row['tamaño']),
                             editorial=editorial,
                             author=author,
-                            description=row['description'],
-                            cantidad=row.get('cantidad', 0)
+                            description=str(row['description']),
+                            cantidad=cantidad,
+                            estadoLibro='Revision'  # Estado por defecto
                         )
                         exitosos += 1
 
                     except Exception as e:
+                        logger.error(f"Error en fila {index + 2}: {str(e)}")
                         fallidos += 1
                         errores.append(f"Error en fila {index + 2}: {str(e)}")
                         continue
-
-                # Mostrar mensajes de resultado
-                if exitosos > 0:
-                    messages.success(request, f'Se importaron {exitosos} productos exitosamente.')
-                if autores_creados > 0:
-                    messages.info(request, f'Se crearon {autores_creados} nuevos autores.')
-                if editoriales_creadas > 0:
-                    messages.info(request, f'Se crearon {editoriales_creadas} nuevas editoriales.')
-                if fallidos > 0:
-                    messages.warning(request, f'Fallaron {fallidos} productos.')
-                    for error in errores:
-                        messages.error(request, error)
-
-                return redirect('productos_list')
+                return redirect('base')
 
             except Exception as e:
+                logger.error(f"Error general: {str(e)}")
                 messages.error(request, f'Error al procesar el archivo: {str(e)}')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'Error en el campo {field}: {error}')
+
     else:
         form = ImportarProductosForm()
 

@@ -10,8 +10,8 @@ class Bodega(models.Model):
         ('OC', 'Ocupado'),
         ('MT', 'Mantenimiento'),
     ]
-    nombre = models.TextField(max_length=200, unique=True)
-    direction = models.TextField(max_length=100, unique=True)
+    nombre = models.CharField(max_length=200, unique=True)
+    direction = models.CharField(max_length=100, unique=True)
     tipo_de_contenido = models.CharField(max_length=100)
     capacidad = models.PositiveIntegerField(null=True, blank=True)
     estado = models.CharField(max_length=2, choices=ESTADO_CHOICES, default='BA')

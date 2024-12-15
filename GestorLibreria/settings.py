@@ -82,7 +82,7 @@ DATABASES = {
                 'ENGINE': 'django.db.backends.mysql', #ENGINE es motor de BD
                 'NAME': 'gestordb',
                 'USER': 'gestordb',
-                'PASSWORD': 'abc.123',
+                'PASSWORD': 'AbC0987654321',
                 'HOST': '127.0.0.1',
                 'PORT': '3306',
         }

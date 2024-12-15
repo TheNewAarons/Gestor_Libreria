@@ -1,6 +1,6 @@
 from django.urls import path, include
 from GestorLibreria import settings
-from Libros.views import LibroCreateView, LibroListView, LibroDeleteView, LibroUpdateView, LibroDetailView, LibroDeleteListView, LibroDetailListView, LibroEditListView
+from Libros.views import LibroCreateView, LibroListView, LibroDeleteView, LibroUpdateView, LibroDetailView, LibroDeleteListView, LibroDetailListView, LibroEditListView, PublicarLibroView, LibrosEnRevisionView, CambiarEstadoLibroView
 
 urlpatterns = [
     path('list/', LibroListView.as_view(), name='list'),
@@ -11,4 +11,7 @@ urlpatterns = [
     path('delete-list/', LibroDeleteListView.as_view(), name='delete_list'),
     path('detail-list/', LibroDetailListView.as_view(), name='detail_list'),
     path('edit-list/', LibroEditListView.as_view(), name='edit_list'),
+    path('publicar/', PublicarLibroView.as_view(), name='publicar_libro'),
+    path('libros_revision/', LibrosEnRevisionView.as_view(), name='libros_revision'),
+    path('cambiar_estado/<int:libro_id>/', CambiarEstadoLibroView.as_view(), name='cambiar_estado'),
 ]
