@@ -7,16 +7,19 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card shadow border-0 p-4">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">Información del Usuario</h3>
+                </div>
                 <div class="card-body">
                     
                     <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">UserName</h5>
+                        <h5 class="text-uppercase text-secondary">Nombre de Usuario</h5>
                         <p class="fs-5 text-dark">{{ usuario.username }}</p>
                         <hr>
                     </div>
                     
                     <div class="mb-3">
-                        <h5 class="text-uppercase text-secondary">Email</h5>
+                        <h5 class="text-uppercase text-secondary">Correo Electrónico</h5>
                         <p class="fs-5 text-dark">{{ usuario.email }}</p>
                         <hr>
                     </div>
@@ -30,7 +33,9 @@
         </div>
         
         <div class="col-md-4 text-center">
-            <a class="btn btn-dark" href="{% url 'userList' %}">Volver</a>
+            <a class="btn btn-info" href="{% url 'userList' %}">
+                <i class="bi bi-arrow-left-circle m-1"></i>Volver
+            </a>
         </div>
     </div>
     {% else %}

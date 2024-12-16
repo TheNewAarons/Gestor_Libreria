@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="post" class="row g-3">
+                    <form id='form-update-editorial' method="post" class="row g-3">
                         {% csrf_token %}
 
                         <!-- Información de la Editorial -->
@@ -85,10 +85,10 @@
                         <div class="col-12">
                             <hr>
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="{% url 'editorial_edit_list' %}" class="btn btn-secondary">
+                                <a href="{% url 'editorial_edit_list' %}" class="btn btn-secondary m-1">
                                     <i class="bi bi-x-circle me-2"></i>Cancelar
                                 </a>
-                                <button type="submit" class="btn btn-warning">
+                                <button id='update-editorial' type="submit" class="btn btn-warning m-1">
                                     <i class="bi bi-check-circle me-2"></i>Actualizar Editorial
                                 </button>
                             </div>
@@ -99,5 +99,60 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.getElementById("update-editorial").addEventListener("click", function (e) {
+        e.preventDefault();
+    
+        const form = document.getElementById("form-update-editorial");
+        const formData = new FormData(form);
+        console.log(formData)
+        fetch("{% url 'editorialUpdate' editorial.id %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log(data);
+                Swal.fire({
+                    title: "¡Editorial actualizado con éxito!",
+                    text: data.message,
+                    icon: "success",
+                }).then(() => {
+                    window.location.href = "{% url 'editorialList' %}";
+                });
+            } else {
+                if (data.errors) {
+                    let errorMessages = Object.values(data.errors)
+                        .flat()
+                        .join("\n");
+    
+                    Swal.fire({
+                        title: "Error en el formulario",
+                        text: errorMessages,
+                        icon: "error",
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error inesperado",
+                        text: "Hubo un problema al procesar la solicitud.",
+                        icon: "error",
+                    });
+                }
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                title: "Error inesperado",
+                text: "Hubo un problema al procesar su solicitud. Intente de nuevo más tarde.",
+                icon: "error",
+            });
+            console.error("Error:", error);
+        });
+    });
+</script>
 {% endblock %}

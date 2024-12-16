@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+import os
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -13,6 +14,8 @@ from django.db.models import Sum
 from django.template.loader import render_to_string
 from xhtml2pdf import pisa
 from io import BytesIO
+
+from GestorLibreria import settings
 
 # Create your views here.
 class RolRequeridoMixin(UserPassesTestMixin):
@@ -239,37 +242,40 @@ def mover_producto(request):
                 'bodega_destino': bodega_destino,
                 'producto': ProductoBodega.objects.get(id=producto_id),
                 'cantidad': cantidad,
-                'username' : usuario.username,
-                'rol' : usuario.rol
+                'username': usuario.username,
+                'rol': usuario.rol
             })
-            #generacion de pdf con datos del movimiento
 
-            response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = f'attchment; filename="movimiento_producto.pdf"'
-
-            pdf_buffer = BytesIO()
-            pisa_status = pisa.CreatePDF(html_content, dest=response)
+            # Ruta temporal para almacenar el PDF
+            pdf_filename = f"movimiento_{bodega_destino.nombre}_{ProductoBodega.objects.get(id=producto_id).producto.title}.pdf"
+        
+            # Ruta para almacenar el PDF
+            pdf_path = os.path.join(settings.MEDIA_ROOT, 'pdfs', pdf_filename)
             
+            print(f"Generando PDF en: {pdf_path}")  # Debugging: verificar la ruta de destino del PDF
+            
+            # Crear el archivo PDF
+            with open(pdf_path, "wb") as pdf_file:
+                pisa_status = pisa.CreatePDF(html_content, dest=pdf_file)
+
+            # Verificar si hubo errores al generar el PDF
             if pisa_status.err:
-                return HttpResponse("Error al generar el pdf", status=500)
-            pdf_buffer.seek(0)
-            messages.success(request, "Movimiento realizado exitosamente")
-            # Limpiar el formulario (pasar datos vacíos para que no se mantengan)
-            context = {
-                'bodegas_origen': bodegas_origen,
-                'bodegas_destino': bodegas_destino,
-                'productos': None,  # Limpiar productos
-                'bodega_seleccionada': None,  # Limpiar bodega seleccionada
-            }
+                print("Error al generar el PDF:", pisa_status.err)  # Debugging: información del error
+                return JsonResponse({"success": False, "message": "Error al generar el PDF"})
             
-            # Mostrar la misma vista sin redirigir, con mensaje de éxito
-            return response
-            return render(request, 'bodegas/mover_producto_entre_bodega.html', context)
+            # Construir la URL pública para acceder al archivo PDF
+            pdf_url = f"{settings.MEDIA_URL}pdfs/{pdf_filename}"
+            print(f"PDF generado en: {pdf_url}")  # Debugging: verificar la URL generada
             
-
+            return JsonResponse({
+                "success": True,
+                "message": "Movimiento realizado exitosamente",
+                "pdf_url": pdf_url.replace("\\", "/"),  # Reemplazar \ por /
+            })
+        
         except Exception as e:
-            messages.error(request, f'Error: {str(e)}')
-            return redirect('mover_producto')
+            print(f"Error en el proceso: {str(e)}")  # Debugging: Ver error general
+            return JsonResponse({"success": False, "message": f"Ocurrió un problema: {str(e)}"})
 
     context = {
         'bodegas_origen': bodegas_origen,

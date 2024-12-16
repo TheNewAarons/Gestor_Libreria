@@ -83,7 +83,19 @@ class EditorialUpdateView(RolRequeridoMixin,UpdateView):
     template_name = 'Editoriales/editorialUpdate.html'
     success_url = reverse_lazy('editorialList')
     rol_requerido = 'Jefe de Bodega'
+    def form_valid(self, form):
+        self.object = form.save()
+        return JsonResponse({
+            "success": True,
+            "message": "Editorial creada con éxito."
+        })
 
+    def form_invalid(self, form):
+        return JsonResponse({
+            "success": False,
+            "errors": form.errors
+        }, status=400)
+    
 class EditorialEditListView(RolRequeridoMixin, ListView):
     model = Editorial
     template_name = 'Editoriales/editorial_edit_list.html'
@@ -116,3 +128,27 @@ class EditorialDeleteView(RolRequeridoMixin, DeleteView):
             return redirect('editorial_delete_list')
         messages.success(request, 'Editorial eliminada exitosamente.')
         return super().post(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        editorial = self.get_object()  #obtenemos el objeto del usuario con la id (pk) de la URL
+        context['username'] = editorial.name  #agrega el username al contexto para usarlo en la plantilla
+        return context
+
+
+    def post(self, request, *args, **kwargs):
+        editorial = self.get_object()
+        #se va a eliminar el usuario
+        try:
+            editorial.delete()
+            #si resulta exitosos devuelve una respuesta en json
+            return JsonResponse({
+                'success': True,
+                'message': 'Usuario eliminado con éxito.'
+            })
+        except Exception as e:
+            #si resulta que hay error devuelve el mensaje de error 
+            return JsonResponse({
+                'success': False,
+                'message': f'Error al eliminar el usuario: {str(e)}'
+            }, status=400)
