@@ -60,7 +60,7 @@ class Bodega(models.Model):
             self.estado = 'OC'
         self.save()
 
-    def _str_(self):
+    def __str__(self):
         return self.nombre
 
 
@@ -69,5 +69,5 @@ class ProductoBodega(models.Model):
     bodega = models.ForeignKey(Bodega, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
 
-    def _str_(self):
+    def __str__(self):
         return self.bodega
