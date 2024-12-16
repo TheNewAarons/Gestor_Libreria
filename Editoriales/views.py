@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -21,11 +22,27 @@ class RolRequeridoMixin(UserPassesTestMixin):
 #Funcion para mostrar en una pagina un mensaje sobre el acesso al sistema mediante un error 403
 def no_autorizado(request):
     return render(request, 'Usuarios/ventanaError.html', status=403)
+
+def format_phone_number(phone):
+    #va a formatear el numero de este modo 9 1234 1234
+    phone = str(phone)
+    if len(phone) == 9:
+        return f"{phone[0]} {phone[1:5]} {phone[5:]}"
+    return phone  #si no tiene 9 caracteres,devolver el número tal cual
 class EditorialListView(RolRequeridoMixin,ListView):
     model = Editorial
     template_name = 'Editoriales/editorialList.html'
     context_object_name = 'editoriales'
     rol_requerido = 'Jefe de Bodega'
+    def get_context_data(self, **kwargs):
+        #Se obtiene el contexto por defecto
+        context = super().get_context_data(**kwargs)
+        
+        #formateamos los datos del telefono
+        for editorial in context['editoriales']:
+            editorial.phone = format_phone_number(editorial.phone)
+        
+        return context
 
 class EditorialCreateView(RolRequeridoMixin,CreateView):
     model = Editorial
@@ -33,12 +50,32 @@ class EditorialCreateView(RolRequeridoMixin,CreateView):
     template_name = 'Editoriales/editorialCreate.html'
     success_url  = reverse_lazy('editorialList')
     rol_requerido = 'Jefe de Bodega'
+    def form_valid(self, form):
+        self.object = form.save()
+        return JsonResponse({
+            "success": True,
+            "message": "Editorial creada con éxito."
+        })
 
+    def form_invalid(self, form):
+        return JsonResponse({
+            "success": False,
+            "errors": form.errors
+        }, status=400)
+    
 class EditorialDeleteView(RolRequeridoMixin,DeleteView):
     model = Editorial
     template_name = 'Editoriales/editorialDelete.html'
     success_url = reverse_lazy('editorialList')
     rol_requerido = 'Jefe de Bodega'
+    def get_object(self, queryset=None):
+        editorial = Editorial.objects.get(id=self.kwargs['editorial_id'])
+        
+        # Verifica si la editorial tiene productos asociados
+        if editorial.productos.count() > 0:
+            return redirect('editorial_list')  # Redirige si tiene productos asociados
+
+        return editorial
 
 class EditorialUpdateView(RolRequeridoMixin,UpdateView):
     model = Editorial

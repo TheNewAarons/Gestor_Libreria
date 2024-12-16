@@ -72,3 +72,4 @@ class UsuarioDetailView(LoginRequiredMixin,RolRequeridoMixin,DetailView):
     rol_requerido = 'Jefe de Bodega'
     login_url = 'registration/login.html'
     redirect_field_name = 'Usuarios/userDetail.html'
+

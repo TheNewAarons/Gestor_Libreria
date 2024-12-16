@@ -13,7 +13,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="post" class="row g-3">
+                    <form id='editorial-form' method="post" class="row g-3">
                         {% csrf_token %}
 
                         <!-- Nombre de la Editorial -->
@@ -84,7 +84,7 @@
                                 <a href="{% url 'editorialList' %}" class="btn btn-secondary">
                                     <i class="bi bi-x-circle me-2"></i>Cancelar
                                 </a>
-                                <button type="submit" class="btn btn-primary">
+                                <button id='create-editorial-btn' type="submit" class="btn btn-primary">
                                     <i class="bi bi-check-circle me-2"></i>Crear Editorial
                                 </button>
                             </div>
@@ -95,5 +95,88 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById("create-editorial-btn").addEventListener("click", function (e) {
+        e.preventDefault();
+        
+        const form = document.getElementById("editorial-form");
+        const formData = new FormData(form);
+        const name = document.getElementById('id_name').value;
+        const phone = document.getElementById('phone_number').value;
+        const address = document.getElementById('id_address').value;
+        
+        // Validación rápida para verificar si los campos están vacíos
+        if (!name || !phone || !address) {
+            Swal.fire({
+                title: "Campos Vacios",
+                text: "Todos los campos son obligatorios.",
+                icon: "error",
+            });
+            return;  // Detener la ejecución si algún campo está vacío
+        }
+        console.log(formData)
+        fetch("{% url 'editorialCreate' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log(data)
+                Swal.fire({
+                    title: "¡Éxito!",
+                    text: data.message,
+                    icon: "success",
+                }).then(() => {
+                    window.location.href = "{% url 'editorialList' %}";
+                });
+            } else {
+                if (data.errors){
+                    let errorMessages = Object.values(data.errors)
+                        .flat()
+                        .join("\n");
+        
+                    Swal.fire({
+                        title: "Error en el formulario",
+                        text: errorMessages,
+                        icon: "error",
+                    });
+                }else{
+                    Swal.fire({
+                        title: "Error inesperado",
+                        text: "Hubo un problema al procesar la solicitud.",
+                        icon: "error",
+                    });
+                }
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                title: "Error inesperado",
+                text: "Hubo un problema al procesar su solicitud. Intente de nuevo más tarde.",
+                icon: "error",
+            });
+            console.error("Error:", error);
+        });
+    });
+</script>
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var input = document.querySelector("#phone_number");
+        var iti = window.intlTelInput(input, {
+            initialCountry: "cl",  // Chile por defecto
+            preferredCountries: ["cl", "us", "gb"], // Países preferidos
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+    });
+    document.querySelector('form').addEventListener('submit', function() {
+        var phoneNumber = iti.getNumber();  // Esto obtiene el número completo con el prefijo
+        document.querySelector("#phone_number").value = phoneNumber;
+    });
+</script>
 
 {% endblock %}

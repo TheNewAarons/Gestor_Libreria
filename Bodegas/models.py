@@ -70,4 +70,4 @@ class ProductoBodega(models.Model):
     cantidad = models.IntegerField()
 
     def __str__(self):
-        return self.bodega
+        return f"{self.bodega.nombre}"
