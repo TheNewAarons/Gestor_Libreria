@@ -81,7 +81,7 @@ def importar_productos(request):
                                 password=make_password('Temporal123'),
                                 first_name=str(row.get('first_name', '')),
                                 last_name=str(row.get('last_name', '')),
-                                rol='author'
+                                rol='Autor'
                             )
                             autores_creados += 1
                             messages.info(request, f"Autor creado: {row['username']}")
