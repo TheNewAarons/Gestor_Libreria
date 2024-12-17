@@ -11,3 +11,6 @@ class BaseView(LoginRequiredMixin, TemplateView):
     
 def contacto(request):
     return render(request, 'Libreria/Seccion_Contacto.html')
+
+class SeccionInformesView(LoginRequiredMixin, TemplateView):
+    template_name = 'Libreria/Seccion_informes.html'

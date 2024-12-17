@@ -92,10 +92,8 @@
                             <i class="bi bi-file-earmark-text"></i> Generador de Informes
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink4">
-                            <li><a class="dropdown-item" href="#">Informe de Ventas</a></li>
-                            <li><a class="dropdown-item" href="#">Informe de Inventario</a></li>
-                            <li><a class="dropdown-item" href="#">Informe de Usuarios</a></li>
-                            <li><a class="dropdown-item" href="#">Informe Personalizado</a></li>
+                            <li><a class="dropdown-item" href="{% url 'informe_inventario' %}">Informe de Inventario</a></li>
+                            <li><a class="dropdown-item" href="{% url 'movimientos' %}">Informe de Movimientos</a></li>  
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -205,7 +203,7 @@
 
             <!-- Módulo 6 -->
             <div class="col-md-4 mb-4">
-                <a href="#" class="module-card">
+                <a href="{% url 'informes' %}" class="module-card">
                     <div class="module-icon"><i class="bi bi-file-earmark-text"></i></div>
                     <div class="module-text">
                         <h5>Generar Informes</h5>

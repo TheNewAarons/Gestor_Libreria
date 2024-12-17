@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informe de Movimiento de Producto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h2 {
+            text-align: center;
+        }
+        p {
+            font-size: 16px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .table th, .table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Informe de Movimiento de Producto</h2>
+    <p><strong>ID de Movimiento:</strong> {{ movimiento.id }}</p>
+    <p><strong>Fecha:</strong> {{ movimiento.fecha }}</p>
+    <p><strong>Producto:</strong> {{ movimiento.producto.title }}</p>
+    <p><strong>Bodega Origen:</strong> {{ movimiento.bodega_origen.nombre }}</p>
+    <p><strong>Bodega Destino:</strong> {{ movimiento.bodega_destino.nombre }}</p>
+    <p><strong>Cantidad:</strong> {{ movimiento.cantidad }}</p>
+    <p><strong>Usuario:</strong> {{ movimiento.usuario.username }}</p>
+</body>
+</html>

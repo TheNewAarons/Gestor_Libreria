@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.shortcuts import render, redirect
 from Bodegas.forms import BodegasForm, ProductoBodegaForm, RetirarProductoForm
-from Bodegas.models import Bodega, ProductoBodega
+from Bodegas.models import Bodega, ProductoBodega, MovimientoProducto
 from django.urls import reverse_lazy
 from django.db.models import Sum
 from django.template.loader import render_to_string
@@ -27,12 +27,58 @@ class RolRequeridoMixin(UserPassesTestMixin):
     def handle_no_permission(self):
         return redirect('no_autorizado')
 
+#pdf para inventario
+def generar_informe_pdf(request, bodega_id):
+    try:
+        detalle_bodega = Bodega.objects.get(id=bodega_id)
+    except Bodega.DoesNotExist:
+        return HttpResponse('Bodega no encontrada', status=404)
+
+    
+    productos_bodega = detalle_bodega.obtener_productos()
+
+    context = {
+        'detalle_bodega': detalle_bodega,
+        'productos_bodega': productos_bodega,
+    }
+
+    html_content = render_to_string('Bodegas/inventario_pdf.html', context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="inventario_bodega.pdf"'
+
+    pisa_status = pisa.CreatePDF(html_content, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF', status=500)
+
+    return response
+
+def generar_informe_pdf_movimiento(request, movimiento_id):
+    movimiento = get_object_or_404(MovimientoProducto, id=movimiento_id)
+
+    context = {
+        'movimiento': movimiento,
+    }
+    html_content = render_to_string('Bodegas/movimientosLista_pdf.html', context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="movimiento_{movimiento.id}.pdf"'
+
+    pisa_status = pisa.CreatePDF(html_content, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF', status=500)
+
+    return response
+
+
 def bodegas_list(request):
-    search_query = request.GET.get('search', '')  # Capturamos el parámetro 'search'
+    search_query = request.GET.get('search', '') 
     if search_query:
-        bodegas = Bodega.objects.filter(nombre__icontains=search_query)  # Filtra por nombre que contenga el texto
+        bodegas = Bodega.objects.filter(nombre__icontains=search_query)  
     else:
-        bodegas = Bodega.objects.all()  # Muestra todas las bodegas si no hay búsqueda
+        bodegas = Bodega.objects.all()  
 
     return render(request, 'Bodegas/bodegas_list.html', {'bodegas': bodegas})
 
@@ -43,9 +89,9 @@ def actualizar_estado_bodega(bodega):
     - Si el nivel de stock es mayor a 0, cambia el estado a 'Ocupado' (OC).
     """
     if bodega.nivel_stock == 0:
-        bodega.estado = 'VA'  # Bodega vacía
+        bodega.estado = 'VA'  
     else:
-        bodega.estado = 'OC'  # Bodega ocupada
+        bodega.estado = 'OC' 
     bodega.save()
 
 def agregar_producto_bodega(request):
@@ -53,26 +99,26 @@ def agregar_producto_bodega(request):
         form = ProductoBodegaForm(request.POST)
         if form.is_valid():
             producto_bodega = form.save(commit=False)
-            libro = producto_bodega.producto  # Relación con el producto (libro)
-            bodega = producto_bodega.bodega  # Relación con la bodega
+            libro = producto_bodega.producto  
+            bodega = producto_bodega.bodega  
 
-            # Verificamos si hay suficiente stock del libro
+
             if producto_bodega.cantidad > libro.cantidad:
                 messages.error(request, f'No hay suficiente stock disponible del producto "{libro.title}". Stock disponible: {libro.cantidad}')
                 return redirect('agregar_producto_bodega')
 
-            # Actualizamos el stock del libro: restamos la cantidad que se va a agregar a la bodega
+
             libro.cantidad -= producto_bodega.cantidad
             libro.save()
 
-            # Actualizamos el nivel de stock de la bodega: aumentamos la cantidad que se va a agregar a la bodega
+            
             bodega.nivel_stock += producto_bodega.cantidad
             bodega.save()
 
-            # Llamamos a la función para actualizar el estado de la bodega (si es necesario)
+            
             actualizar_estado_bodega(bodega)
 
-            # Guardamos la relación entre el libro y la bodega
+            
             producto_bodega.save()
             return redirect('bodegas_list')
         else:
@@ -223,8 +269,15 @@ def mover_producto(request):
             
             producto_bodega.save()
             producto_destino.save()
-
+            #almacenar informacion en el modelo movimiento
             # Actualizar nivel_stock de ambas bodegas
+            MovimientoProducto.objects.create(
+            bodega_origen=bodega_origen,
+            bodega_destino=bodega_destino,
+            producto=producto_bodega.producto,
+            cantidad=cantidad,
+            usuario=request.user
+)
             bodega_origen.nivel_stock = ProductoBodega.objects.filter(bodega=bodega_origen).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
             bodega_destino.nivel_stock = ProductoBodega.objects.filter(bodega=bodega_destino).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
             
@@ -284,6 +337,15 @@ def mover_producto(request):
         'bodega_seleccionada': bodega_seleccionada
     }
     return render(request, 'bodegas/mover_producto_entre_bodega.html', context)
+
+def listar_movimientos(request):
+    movimientos_generales = MovimientoProducto.objects.all()
+
+    context = {
+        'movimientos_generales': movimientos_generales,
+    }
+
+    return render(request, 'Bodegas/lista_Movimientos.html', context)
 
 def get_productos_bodega(request):
     try:
@@ -396,6 +458,21 @@ def editar_bodega(request, pk):
         return redirect('editar_bodegas_list')
         
     return render(request, 'bodegas/editar_bodega.html', {'bodega': bodega})
+def bodegas_informe_inventario(request):
+    bodegas = Bodega.objects.all()
+    detalles_bodegas = []
+    
+    for bodega in bodegas:
+        productos = ProductoBodega.objects.filter(bodega=bodega, cantidad__gt=0)
+        detalles_bodegas.append({
+            'bodega': bodega,
+            'productos': productos,
+            'total_productos': sum(p.cantidad for p in productos)
+        })
+    
+    return render(request, 'bodegas/informe_inventario.html', {
+        'detalles_bodegas': detalles_bodegas
+    })
 
 class BodegaEstadoListView(RolRequeridoMixin, ListView):
     model = Bodega

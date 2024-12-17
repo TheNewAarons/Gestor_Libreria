@@ -1,0 +1,58 @@
+{% extends "Libreria/Base_Modulos.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-5 text-primary font-weight-bold">Generación de Informe sobre Movimientos de Productos</h2>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for movimiento in movimientos_generales %}
+        <div class="col">
+            <div class="card shadow-lg border-light rounded-3" style="min-height: 400px; display: flex; flex-direction: column;">
+                <div class="card-header bg-primary text-white text-center p-3" style="flex-shrink: 0;">
+                    <h5 class="card-title mb-0">Movimiento #{{ movimiento.id }}</h5>
+                </div>
+                <div class="card-body d-flex flex-column flex-grow-1">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Fecha:</strong> {{ movimiento.fecha }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Producto:</strong> {{ movimiento.producto.title }}</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Bodega Origen:</strong> {{ movimiento.bodega_origen.nombre }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Bodega Destino:</strong> {{ movimiento.bodega_destino.nombre }}</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Cantidad:</strong> {{ movimiento.cantidad }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Usuario:</strong> {{ movimiento.usuario.username }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'generar_informe_pdf_movimiento' movimiento.id %}" class="btn btn-light btn-sm rounded-pill">
+                        <i class="bi bi-file-earmark-pdf"></i> Generar PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted text-center">No hay movimientos registrados.</p>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-dark btn-lg rounded-pill px-4" href="{% url 'informes' %}">
+            <i class="bi bi-arrow-left-circle"></i> Volver
+        </a>
+    </div>
+</div>
+{% endblock %}

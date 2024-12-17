@@ -1,6 +1,7 @@
 from django.db import models
 from Libros.models import Libro
 from django.core.exceptions import ValidationError
+from Usuarios.models import Users
 
 # Create your models here.
 
@@ -63,6 +64,17 @@ class Bodega(models.Model):
     def __str__(self):
         return self.nombre
 
+class MovimientoProducto(models.Model):
+    bodega_origen = models.ForeignKey('Bodega', related_name='movimientos_salida', on_delete=models.CASCADE)
+    bodega_destino = models.ForeignKey('Bodega', related_name='movimientos_entrada', on_delete=models.CASCADE)
+    producto = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    usuario = models.ForeignKey(Users, on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True) 
+
+    def __str__(self):
+        return f"{self.cantidad} {self.producto.nombre} de {self.bodega_origen.nombre} a {self.bodega_destino.nombre}"
+    
 
 class ProductoBodega(models.Model):
     producto = models.ForeignKey(Libro, on_delete=models.CASCADE)

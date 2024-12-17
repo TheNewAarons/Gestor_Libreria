@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
 from Libreria import views
-from Libreria.views import BaseView
+from Libreria.views import BaseView, SeccionInformesView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -11,6 +11,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('base/', BaseView.as_view(), name='base'),
     path('contacto/', views.contacto, name='contacto'),
+    path('informes/', SeccionInformesView.as_view(), name='informes' ),
     path('Libros/', include('Libros.urls')),
     path('Bodegas/', include('Bodegas.urls')),
     path('Editoriales/', include('Editoriales.urls')),
