@@ -31,7 +31,7 @@
 <body>
     <h2>Informe de Movimiento de Producto</h2>
     <p><strong>ID de Movimiento:</strong> {{ movimiento.id }}</p>
-    <p><strong>Fecha:</strong> {{ movimiento.fecha }}</p>
+    <p><strong>Fecha:</strong> {{ movimiento.created_at }}</p>
     <p><strong>Producto:</strong> {{ movimiento.producto.title }}</p>
     <p><strong>Bodega Origen:</strong> {{ movimiento.bodega_origen.nombre }}</p>
     <p><strong>Bodega Destino:</strong> {{ movimiento.bodega_destino.nombre }}</p>

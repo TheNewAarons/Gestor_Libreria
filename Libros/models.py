@@ -3,7 +3,7 @@ from Editoriales.models import Editorial
 from Usuarios.models import Users
 
 # Create your models here.
- 
+
 class Libro(models.Model):
     ESTADO_CHOICES = [
         ('Libro', 'Libro'),
