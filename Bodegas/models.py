@@ -65,15 +65,61 @@ class Bodega(models.Model):
         return self.nombre
 
 class MovimientoProducto(models.Model):
-    bodega_origen = models.ForeignKey('Bodega', related_name='movimientos_salida', on_delete=models.CASCADE)
-    bodega_destino = models.ForeignKey('Bodega', related_name='movimientos_entrada', on_delete=models.CASCADE)
-    producto = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    bodega_origen = models.ForeignKey(
+        'Bodega',
+        related_name='movimientos_salida',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+    nombre_save_bodega_origen = models.CharField(max_length=100, blank=True, null=True)
+
+    bodega_destino = models.ForeignKey(
+        'Bodega',
+        related_name='movimientos_entrada',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+    nombre_save_bodega_destino = models.CharField(max_length=100, blank=True, null=True)
+
+    producto = models.ForeignKey(
+        Libro,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+    nombre_save_producto = models.CharField(max_length=100, blank=True, null=True)
+
     cantidad = models.PositiveIntegerField()
-    usuario = models.ForeignKey(Users, on_delete=models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True) 
+
+    usuario = models.ForeignKey(
+        Users,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+    nombre_save_usuario = models.CharField(max_length=150, blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        #guarda los nombres para que cuando se eliminen los atributos no queden como null y quede su registro
+        if self.bodega_origen:
+            self.nombre_save_bodega_origen = self.bodega_origen.nombre
+        if self.bodega_destino:
+            self.nombre_save_bodega_destino = self.bodega_destino.nombre
+        if self.producto:
+            self.nombre_save_producto = self.producto.title
+        if self.usuario:
+            self.nombre_save_usuario = self.usuario.username
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.cantidad} {self.producto.nombre} de {self.bodega_origen.nombre} a {self.bodega_destino.nombre}"
+        origen = self.nombre_save_bodega_origen 
+        destino = self.nombre_save_bodega_destino 
+        producto = self.nombre_save_producto 
+        return f"{self.cantidad} {producto} de {origen} a {destino}"
     
 
 class ProductoBodega(models.Model):

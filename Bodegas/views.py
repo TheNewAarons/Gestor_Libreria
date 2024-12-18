@@ -1,4 +1,4 @@
-import os
+
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -13,9 +13,7 @@ from django.urls import reverse_lazy
 from django.db.models import Sum
 from django.template.loader import render_to_string
 from xhtml2pdf import pisa
-from io import BytesIO
 
-from GestorLibreria import settings
 
 # Create your views here.
 class RolRequeridoMixin(UserPassesTestMixin):
@@ -102,28 +100,51 @@ def agregar_producto_bodega(request):
             libro = producto_bodega.producto  
             bodega = producto_bodega.bodega  
 
-
+            # Verificar que hay suficiente stock en el producto
             if producto_bodega.cantidad > libro.cantidad:
-                messages.error(request, f'No hay suficiente stock disponible del producto "{libro.title}". Stock disponible: {libro.cantidad}')
+                messages.error(request, f'No hay suficiente stock disponible del producto "{libro.title}". Stock disponible: "{libro.cantidad}"')
                 return redirect('agregar_producto_bodega')
 
+            # Verificar si el producto ya está en la bodega
+            producto_bodega_existente = ProductoBodega.objects.filter(producto=libro, bodega=bodega).first()
 
-            libro.cantidad -= producto_bodega.cantidad
-            libro.save()
+            if producto_bodega_existente:
+                # Si el producto ya está en la bodega, actualizamos la cantidad
+                producto_bodega_existente.cantidad += producto_bodega.cantidad
+                producto_bodega_existente.save()
 
-            
-            bodega.nivel_stock += producto_bodega.cantidad
-            bodega.save()
+                # Mover el stock solo una vez
+                libro.cantidad -= producto_bodega.cantidad
+                libro.save()
 
-            
-            actualizar_estado_bodega(bodega)
+                bodega.nivel_stock += producto_bodega.cantidad
+                bodega.save()
 
-            
-            producto_bodega.save()
-            return redirect('bodegas_list')
+                actualizar_estado_bodega(bodega)
+
+                mensaje = f'Cantidad del producto "{libro.title}" ya estaba en la bodega "{bodega.nombre}". Cantidad actualizada.'
+            else:
+                # Si no existe, lo agregamos como un nuevo producto en la bodega
+                producto_bodega.save()
+
+                # Actualizar la cantidad del producto
+                libro.cantidad -= producto_bodega.cantidad
+                libro.save()
+
+                # Actualizar el stock en la bodega
+                bodega.nivel_stock += producto_bodega.cantidad
+                bodega.save()
+
+                actualizar_estado_bodega(bodega)
+
+                mensaje = f'Producto "{libro.title}" agregado correctamente a la bodega "{bodega.nombre}".'
+
+            messages.success(request, mensaje)
         else:
+            # Si el formulario no es válido, mostramos los errores
             messages.error(request, form.errors)
     else:
+        # Si no es un POST, mostramos el formulario vacío
         form = ProductoBodegaForm()
 
     return render(request, 'Bodegas/agregar_producto_bodega.html', {'form': form})
@@ -178,12 +199,13 @@ def retirar_producto_bodega(request):
                 producto.save()
                 
                 messages.success(request, 'Producto retirado exitosamente')
-                return redirect('bodegas_list')
 
         except Exception as e:
             messages.error(request, f'Error al retirar producto: {str(e)}')
 
     return render(request, 'bodegas/retirar_producto_bodega.html', context)
+
+
 
 def mover_producto(request):
     # Obtener bodegas que tienen productos con cantidad mayor a 0
@@ -200,142 +222,108 @@ def mover_producto(request):
         productos = ProductoBodega.objects.filter(bodega=bodega_seleccionada, cantidad__gt=0)
 
     if request.method == 'POST':
-        try:
-            bodega_origen_id = request.POST.get('bodega_origen')
-            bodega_destino_id = request.POST.get('bodega_destino')
-            producto_id = request.POST.get('producto')
-            cantidad = int(request.POST.get('cantidad', 0))
+        bodega_origen_id = request.POST.get('bodega_origen')
+        bodega_destino_id = request.POST.get('bodega_destino')
+        producto_id = request.POST.get('producto')
+        cantidad = int(request.POST.get('cantidad', 0))
 
-            if not all([bodega_origen_id, bodega_destino_id, producto_id, cantidad]):
-                messages.error(request, 'Todos los campos son requeridos')
-                return redirect('mover_producto')
+        # Validaciones
+        if not all([bodega_origen_id, bodega_destino_id, producto_id, cantidad]):
+            return JsonResponse({'success': False, 'message': 'Todos los campos son requeridos'})
 
-            bodega_origen = Bodega.objects.get(id=bodega_origen_id)
-            bodega_destino = Bodega.objects.get(id=bodega_destino_id)
+        bodega_origen = Bodega.objects.get(id=bodega_origen_id)
+        bodega_destino = Bodega.objects.get(id=bodega_destino_id)
 
-            if bodega_origen.estado != 'OC':
-                messages.error(request, 'La bodega de origen debe estar ocupada')
-                return redirect('mover_producto')
+        # Verificar si la bodega de origen está ocupada
+        if bodega_origen.estado != 'OC':
+            return JsonResponse({'success': False, 'message': 'La bodega de origen debe estar ocupada'})
 
-            if bodega_destino.estado == 'MN':
-                messages.error(request, 'No se puede mover productos a una bodega en mantenimiento')
-                return redirect('mover_producto')
+        # Verificar si la bodega de destino está en mantenimiento
+        if bodega_destino.estado == 'MN':
+            return JsonResponse({'success': False, 'message': 'No se puede mover productos a una bodega en mantenimiento'})
 
-            if bodega_origen_id == bodega_destino_id:
-                messages.error(request, 'Las bodegas deben ser diferentes')
-                return redirect('mover_producto')
+        # Verificar si las bodegas son diferentes
+        if bodega_origen_id == bodega_destino_id:
+            return JsonResponse({'success': False, 'message': 'Las bodegas deben ser diferentes'})
 
-            # Usar aggregate para sumar las cantidades de productos duplicados
-            producto_bodega_total = ProductoBodega.objects.filter(
-                bodega_id=bodega_origen_id, 
-                producto_id=producto_id
-            ).aggregate(
-                total_cantidad=Sum('cantidad')
-            )['total_cantidad'] or 0
+        # Usar aggregate para sumar las cantidades de productos duplicados
+        producto_bodega_total = ProductoBodega.objects.filter(
+            bodega_id=bodega_origen_id, 
+            producto_id=producto_id
+        ).aggregate(
+            total_cantidad=Sum('cantidad')
+        )['total_cantidad'] or 0
 
-            if producto_bodega_total == 0:
-                messages.error(request, 'No hay stock disponible en la bodega de origen')
-                return redirect('mover_producto')
+        # Verificar si hay stock suficiente en la bodega de origen
+        if producto_bodega_total == 0:
+            return JsonResponse({'success': False, 'message': 'No hay stock disponible en la bodega de origen'})
 
-            if cantidad <= 0:
-                messages.error(request, 'La cantidad debe ser mayor a 0')
-                return redirect('mover_producto')
-                
-            if cantidad > producto_bodega_total:
-                messages.error(request, f'Stock insuficiente. Disponible: {producto_bodega_total}')
-                return redirect('mover_producto')
+        # Verificar que la cantidad sea mayor que 0
+        if cantidad <= 0:
+            return JsonResponse({'success': False, 'message': 'La cantidad debe ser mayor a 0'})
 
-            # Obtener todos los registros duplicados
-            productos_bodega = ProductoBodega.objects.filter(
-                bodega_id=bodega_origen_id, 
-                producto_id=producto_id
-            ).order_by('id')
+        # Verificar que haya suficiente stock en la bodega de origen
+        if cantidad > producto_bodega_total:
+            return JsonResponse({'success': False, 'message': f'Stock insuficiente. Disponible: {producto_bodega_total}'})
 
-            # Consolidar en el primer registro y eliminar los demás
-            producto_bodega = productos_bodega.first()
-            producto_bodega.cantidad = producto_bodega_total
-            productos_bodega.exclude(id=producto_bodega.id).delete()
+        # Obtener todos los registros duplicados
+        productos_bodega = ProductoBodega.objects.filter(
+            bodega_id=bodega_origen_id, 
+            producto_id=producto_id
+        ).order_by('id')
 
-            # Crear o actualizar el producto en la bodega de destino
-            producto_destino, created = ProductoBodega.objects.get_or_create(
-                bodega=bodega_destino,
-                producto_id=producto_id,
-                defaults={'cantidad': 0}
-            )
+        # Consolidar en el primer registro y eliminar los demás
+        producto_bodega = productos_bodega.first()
+        producto_bodega.cantidad = producto_bodega_total
+        productos_bodega.exclude(id=producto_bodega.id).delete()
 
-            # Realizar el movimiento
-            producto_bodega.cantidad -= cantidad
-            producto_destino.cantidad += cantidad
-            
-            producto_bodega.save()
-            producto_destino.save()
-            #almacenar informacion en el modelo movimiento
-            # Actualizar nivel_stock de ambas bodegas
-            MovimientoProducto.objects.create(
+        # Crear o actualizar el producto en la bodega de destino
+        producto_destino, created = ProductoBodega.objects.get_or_create(
+            bodega=bodega_destino,
+            producto_id=producto_id,
+            defaults={'cantidad': 0}
+        )
+
+        # Realizar el movimiento
+        producto_bodega.cantidad -= cantidad
+        producto_destino.cantidad += cantidad
+
+        producto_bodega.save()
+        producto_destino.save()
+
+        # Almacenar información en el modelo Movimiento
+        MovimientoProducto.objects.create(
             bodega_origen=bodega_origen,
             bodega_destino=bodega_destino,
             producto=producto_bodega.producto,
             cantidad=cantidad,
             usuario=request.user
-)
-            bodega_origen.nivel_stock = ProductoBodega.objects.filter(bodega=bodega_origen).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
-            bodega_destino.nivel_stock = ProductoBodega.objects.filter(bodega=bodega_destino).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
-            
-            # Actualizar estados basados en nivel_stock
-            if bodega_origen.nivel_stock == 0:
-                bodega_origen.estado = 'VA'
-            if bodega_destino.nivel_stock > 0:
-                bodega_destino.estado = 'OC'
-            
-            bodega_origen.save()
-            bodega_destino.save()
-            usuario = request.user
-            html_content = render_to_string('Bodegas/movimiento_pdf.html', {
-                'bodega_origen': bodega_origen,
-                'bodega_destino': bodega_destino,
-                'producto': ProductoBodega.objects.get(id=producto_id),
-                'cantidad': cantidad,
-                'username': usuario.username,
-                'rol': usuario.rol
-            })
+        )
 
-            # Ruta temporal para almacenar el PDF
-            pdf_filename = f"movimiento_{bodega_destino.nombre}_{ProductoBodega.objects.get(id=producto_id).producto.title}.pdf"
-        
-            # Ruta para almacenar el PDF
-            pdf_path = os.path.join(settings.MEDIA_ROOT, 'pdfs', pdf_filename)
-            
-            print(f"Generando PDF en: {pdf_path}")  # Debugging: verificar la ruta de destino del PDF
-            
-            # Crear el archivo PDF
-            with open(pdf_path, "wb") as pdf_file:
-                pisa_status = pisa.CreatePDF(html_content, dest=pdf_file)
+        # Actualizar nivel_stock de ambas bodegas
+        bodega_origen.nivel_stock = ProductoBodega.objects.filter(bodega=bodega_origen).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+        bodega_destino.nivel_stock = ProductoBodega.objects.filter(bodega=bodega_destino).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
 
-            # Verificar si hubo errores al generar el PDF
-            if pisa_status.err:
-                print("Error al generar el PDF:", pisa_status.err)  # Debugging: información del error
-                return JsonResponse({"success": False, "message": "Error al generar el PDF"})
-            
-            # Construir la URL pública para acceder al archivo PDF
-            pdf_url = f"{settings.MEDIA_URL}pdfs/{pdf_filename}"
-            print(f"PDF generado en: {pdf_url}")  # Debugging: verificar la URL generada
-            
-            return JsonResponse({
-                "success": True,
-                "message": "Movimiento realizado exitosamente",
-                "pdf_url": pdf_url.replace("\\", "/"),  # Reemplazar \ por /
-            })
-        
-        except Exception as e:
-            print(f"Error en el proceso: {str(e)}")  # Debugging: Ver error general
-            return JsonResponse({"success": False, "message": f"Ocurrió un problema: {str(e)}"})
+        # Actualizar estados basados en nivel_stock
+        if bodega_origen.nivel_stock == 0:
+            bodega_origen.estado = 'VA'
+        if bodega_destino.nivel_stock > 0:
+            bodega_destino.estado = 'OC'
 
+        bodega_origen.save()
+        bodega_destino.save()
+
+        # Devolver respuesta JSON
+        return JsonResponse({'success': True, 'message': 'El movimiento se realizó con éxito'})
+
+    # Contexto para la plantilla
     context = {
         'bodegas_origen': bodegas_origen,
         'bodegas_destino': bodegas_destino,
         'productos': productos,
         'bodega_seleccionada': bodega_seleccionada
     }
+
     return render(request, 'bodegas/mover_producto_entre_bodega.html', context)
 
 def listar_movimientos(request):
