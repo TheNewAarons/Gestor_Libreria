@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #0F172A;
+    --primary-light: #1E293B;
+    --accent-color: #3B82F6;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --border-color: #E2E8F0;
+    --input-bg: #F8FAFC;
+    --bg-page: #FFFFFF;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login-wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+.login-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* Left Side Styles */
+.login-side {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-page);
+    padding: 2rem;
+    position: relative;
+}
+
+.login-content {
+    width: 100%;
+    max-width: 440px;
+    padding: 2rem;
+}
+
+.brand-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.brand-logo {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.brand-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: -0.025em;
+}
+
+.login-header h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.025em;
+}
+
+.login-header p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.5;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.925rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--accent-color);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.password-input-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.password-toggle:hover {
+    color: var(--text-primary);
+}
+
+.form-check-input {
+    width: 1.125rem;
+    height: 1.125rem;
+    border-color: var(--border-color);
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    color: var(--text-secondary);
+    font-size: 0.925rem;
+    margin-left: 0.25rem;
+    cursor: pointer;
+}
+
+.forgot-password,
+.contact-admin {
+    color: var(--accent-color);
+    font-size: 0.925rem;
+    font-weight: 500;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.forgot-password:hover,
+.contact-admin:hover {
+    color: #2563EB;
+    text-decoration: underline;
+}
+
+.btn-submit {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 0.875rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-submit:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* Right Side Styles */
+.feature-side {
+    width: 50%;
+    background-color: var(--primary-color);
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 4rem;
+    overflow: hidden;
+}
+
+.grid-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.5;
+}
+
+.feature-content {
+    position: relative;
+    z-index: 10;
+    color: white;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.feature-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+}
+
+.feature-header p {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s ease;
+}
+
+.feature-item:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    flex-shrink: 0;
+}
+
+.feature-text h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+}
+
+.feature-text p {
+    margin: 0;
+    font-size: 0.925rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .feature-side {
+        display: none;
+    }
+
+    .login-side {
+        width: 100%;
+        padding: 1.5rem;
+    }
+
+    .login-content {
+        padding: 0;
+    }
+}
